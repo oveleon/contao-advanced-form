@@ -1,8 +1,8 @@
-# Contao Advanced Form
+# MPFormConditions
 
-The contao advanced form bundle adds an advanced form generator for multi page forms to Contao 4.
+Adds display conditions to mp_forms form pages.
 
 ### Install
 ```
-composer require oveleon/contao-advanced-form
+composer require oveleon/contao-mp_forms_conditions
 ```
