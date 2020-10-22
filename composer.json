@@ -1,0 +1,56 @@
+{
+  "name":"oveleon/contao-advanced-form-bundle",
+  "type":"contao-bundle",
+  "description":"Extended multi pages form generator for Contao 4 Open Source CMS",
+  "keywords":["contao","advanced","form"],
+  "homepage":"https://oveleon.de/",
+  "license":"GNU Affero General Public License v3.0",
+  "authors":[
+    {
+      "name":"Oveleon",
+      "homepage":"https://oveleon.de/",
+      "role":"Developer"
+    },
+    {
+      "name":"Daniele Sciannimanica",
+      "homepage":"https://github.com/doishub",
+      "role":"Developer"
+    },
+    {
+      "name":"Fabian Ekert",
+      "homepage":"https://github.com/eki89",
+      "role":"Developer"
+    }
+  ],
+  "require":{
+    "php":"^7.2",
+    "contao/core-bundle":"^4.4"
+  },
+  "require-dev": {
+    "contao/manager-plugin": "^2.0"
+  },
+  "conflict": {
+    "contao/core": "*",
+    "contao/manager-plugin": "<2.0 || >=3.0"
+  },
+  "autoload":{
+    "psr-4": {
+      "Oveleon\\ContaoAdvancedForm\\": "src/"
+    },
+    "classmap": [
+      "src/Resources/contao/"
+    ],
+    "exclude-from-classmap": [
+      "src/Resources/contao/config/",
+      "src/Resources/contao/dca/",
+      "src/Resources/contao/languages/",
+      "src/Resources/contao/templates/"
+    ]
+  },
+  "extra":{
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    },
+    "contao-manager-plugin": "Oveleon\\ContaoAdvancedForm\\ContaoManager\\Plugin"
+  }
+}
