@@ -1,6 +1,6 @@
 # MPFormConditions
 
-Adds display conditions to mp_forms form pages.
+Adds display conditions to [mp_forms](https://github.com/terminal42/contao-mp_forms) form pages.
 
 ### Install
 ```
