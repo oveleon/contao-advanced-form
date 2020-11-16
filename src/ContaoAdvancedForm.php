@@ -3,16 +3,16 @@
 declare(strict_types=1);
 
 /*
- * This file is part of Oveleon MPFormConditions.
+ * This file is part of Oveleon ContaoAdvancedForm.
  *
  * (c) https://www.oveleon.de/
  */
 
-namespace Oveleon\MPFormConditions;
+namespace Oveleon\ContaoAdvancedForm;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class MPFormConditions extends Bundle
+class ContaoAdvancedForm extends Bundle
 {
 
 }

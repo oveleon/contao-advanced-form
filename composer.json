@@ -1,8 +1,8 @@
 {
-  "name":"oveleon/contao-mp_forms-conditions",
+  "name":"oveleon/contao-advanced-form",
   "type":"contao-bundle",
-  "description":"Extends the form pages of mp_forms with conditions.",
-  "keywords":["contao","mp","form","condition","rules"],
+  "description":"advanced-form extension for Contao Open Source CMS",
+  "keywords":["contao","forms","condition","multi","multipage"],
   "homepage":"https://oveleon.de/",
   "license":"AGPL-3.0",
   "authors":[
@@ -24,7 +24,8 @@
   ],
   "require":{
     "php":"^7.2",
-    "contao/core-bundle":"^4.4"
+    "contao/core-bundle":"^4.9",
+    "codefog/contao-haste": "~4.24"
   },
   "require-dev": {
     "contao/manager-plugin": "^2.0"
@@ -35,7 +36,7 @@
   },
   "autoload":{
     "psr-4": {
-      "Oveleon\\MPFormConditions\\": "src/"
+      "Oveleon\\ContaoAdvancedForm\\": "src/"
     },
     "classmap": [
       "src/Resources/contao/"
@@ -48,6 +49,9 @@
     ]
   },
   "extra":{
-    "contao-manager-plugin": "Oveleon\\MPFormConditions\\ContaoManager\\Plugin"
+    "branch-alias": {
+      "dev-main": "0.1.x-dev"
+    },
+    "contao-manager-plugin": "Oveleon\\ContaoAdvancedForm\\ContaoManager\\Plugin"
   }
 }

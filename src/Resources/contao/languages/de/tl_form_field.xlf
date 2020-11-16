@@ -1,0 +1,66 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="src/Resources/contao/languages/en/tl_form_field.php" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_form_field.formPageAlias.0">
+        <source>Formpage alias</source>
+        <target>Formularseiten-Alias</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.formPageAlias.1">
+        <source>The form page alias is a unique reference to the form page which can be called instead of its numeric ID.</source>
+        <target>Der Alias der Formularseite ist eine eindeutige Referenz, die anstelle der numerischen Formseiten-ID aufgerufen werden kann.</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.blabel.0">
+        <source>Back button label</source>
+        <target>Bezeichnung der Zurück-Schaltfläche</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.blabel.1">
+        <source>Please enter the label of the back button.</source>
+        <target>Bitte geben Sie die Bezeichnung der Zurück-Schaltfläche ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.addCondition.0">
+        <source>Add condition</source>
+        <target>Bedingung hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.addCondition.1">
+        <source>Activate conditions for this form page.</source>
+        <target>Bedingungen für diese Formularseite aktivieren.</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.condition.0">
+        <source>Condition</source>
+        <target>Bedingung</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.condition.1">
+        <source>Please enter the label of the form page here.</source>
+        <target>Bitte geben Sie hier die Bedingung der Formularseite ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.protected.0">
+        <source>Protect form page</source>
+        <target>Formularseite schützen</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.protected.1">
+        <source>Restrict form page access to certain member groups.</source>
+        <target>Den Formularseiten-Zugriff auf bestimmte Mitgliedergruppen beschränken.</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.groups.0">
+        <source>Allowed member groups</source>
+        <target>Erlaubte Mitgliedergruppen</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.groups.1">
+        <source>These groups will be able to access the form page.</source>
+        <target>Diese Gruppen dürfen auf die Formularseite zugreifen.</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.guests.0">
+        <source>Show to guests only</source>
+        <target>Nur Gästen anzeigen</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.guests.1">
+        <source>Hide the form page if a member is logged in.</source>
+        <target>Die Fromularseite verstecken, sobald ein Mitglied angemeldet ist.</target>
+      </trans-unit>
+      <trans-unit id="tl_form_field.condition_legend">
+        <source>Conditions</source>
+        <target>Bedingungen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

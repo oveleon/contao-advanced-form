@@ -1,0 +1,16 @@
+<?php $this->extend('form_row'); ?>
+
+<?php $this->block('field'); ?>
+
+<?php if ($this->src): ?>
+  <input type="image" src="<?= $this->src ?>" title="<?= Contao\StringUtil::specialchars($this->slabel) ?>" alt="<?= Contao\StringUtil::specialchars($this->slabel) ?>">
+<?php else: ?>
+  <button type="submit" name="pageSwitch" value="continue"><?= $this->slabel ?></button>
+<?php endif; ?>
+
+<?php if ($this->blabel): ?>
+  <button type="submit" name="pageSwitch" value="back" formnovalidate><?= $this->blabel ?></button>
+<?php endif; ?>
+
+<?php $this->endblock(); ?>
+
