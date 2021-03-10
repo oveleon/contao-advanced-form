@@ -63,7 +63,7 @@ class FormPageSwitch extends Widget
         if (TL_MODE == 'BE')
         {
             $objTemplate = new BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### ' . Utf8::strtoupper($GLOBALS['TL_LANG']['FFL']['pageSwitch'][0]) . ' :: ' . $this->label . ' ###';
+            $objTemplate->wildcard = '### ' . Utf8::strtoupper($GLOBALS['TL_LANG']['FFL']['pageSwitch'][0]) . ' :: ' . $this->label . ' ###' . ($this->addCondition ? ' (' . $this->condition . ')' : '');
 
             return $objTemplate->parse();
         }

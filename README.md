@@ -16,7 +16,7 @@ The contao advanced form bundle adds an advanced form generator for multi page f
 
 ### Install
 ```
-composer require oveleon/contao-advanced-form-bundle
+composer require oveleon/contao-advanced-form
 ```
 
 ---

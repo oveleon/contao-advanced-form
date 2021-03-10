@@ -11,6 +11,7 @@ namespace Oveleon\ContaoAdvancedForm;
 use Contao\Form;
 use Contao\FormFieldModel;
 use Contao\FrontendUser;
+use Contao\StringUtil;
 use Contao\System;
 
 class FormPage
@@ -97,6 +98,8 @@ class FormPage
             return true;
         }
 
+        $accessible = true;
+
         if ($this->objPageSwitch->addCondition)
         {
             $condition = $this->generateCondition($this->objPageSwitch->condition);
@@ -106,9 +109,33 @@ class FormPage
                 return eval($condition);
             };
 
-            return $callableCondition($submitted);
+             $accessible = $callableCondition($submitted);
         }
 
-        return true;
+        if ($accessible)
+        {
+            $user = System::importStatic(FrontendUser::class, 'User');
+
+            if ($this->objPageSwitch->guests && FE_USER_LOGGED_IN)
+            {
+                $accessible = false;
+            }
+
+            if ($this->objPageSwitch->protected)
+            {
+                $groups = StringUtil::deserialize($this->objPageSwitch->groups);
+
+                if (FE_USER_LOGGED_IN && !(empty($groups) || !is_array($groups) || !count(array_intersect($groups, $user->groups))))
+                {
+                    $accessible = true;
+                }
+                else
+                {
+                    $accessible = false;
+                }
+            }
+        }
+
+        return $accessible;
     }
 }

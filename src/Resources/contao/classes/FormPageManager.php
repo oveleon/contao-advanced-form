@@ -248,6 +248,18 @@ class FormPageManager
     }
 
     /**
+     * Get the form page for a given step.
+     *
+     * @param string $step
+     *
+     * @return FormPage
+     */
+    protected function getFormPageForStep($step)
+    {
+        return $this->arrFormPages[array_search($step, $this->arrFormPageMapper)];
+    }
+
+    /**
      * Get the fields for a given step.
      *
      * @param string $step
@@ -263,7 +275,7 @@ class FormPageManager
             throw new \InvalidArgumentException('Step "' . $step . '" is not available!');
         }
 
-        return $this->arrFormPages[array_search($step, $this->arrFormPageMapper)]->getFields();
+        return $this->getFormPageForStep($step)->getFields();
     }
 
     /**
@@ -361,12 +373,23 @@ class FormPageManager
      */
     public function isLastStep()
     {
-        if (array_search($this->getCurrentStep(), $this->arrFormPageMapper) >= (count($this->arrFormPageMapper) - 2))
+        $currentIndex = array_search($this->getCurrentStep(), $this->arrFormPageMapper);
+        $targetIndex  = (count($this->arrFormPageMapper) - 2);
+
+        if ($currentIndex >= $targetIndex)
         {
             return true;
         }
 
-        return false;
+        for (++$currentIndex; $currentIndex <= $targetIndex; $currentIndex++)
+        {
+            if ($this->arrFormPages[$currentIndex]->isAccessible($this))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -527,12 +550,9 @@ class FormPageManager
 
         foreach ($this->arrFormPageMapper as $step)
         {
-            if (($index = array_search($step, $this->arrFormPageMapper)) !== false)
+            if (!$this->getFormPageForStep($step)->isAccessible($this))
             {
-                if (!$this->arrFormPages[$index]->isAccessible($this))
-                {
-                    continue;
-                }
+                continue;
             }
 
             if ($this->validateStep($step) === false)
