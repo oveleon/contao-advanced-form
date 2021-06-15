@@ -71,11 +71,11 @@ class AdvancedForm
      * @param Widget $widget
      * @param string $formId
      * @param array  $formData
-     * @param Form   $form
+     * @param        $form
      *
      * @return Widget
      */
-    public function loadValuesFromSession(Widget $widget, $formId, $formData, Form $form)
+    public function loadValuesFromSession(Widget $widget, $formId, $formData, $form)
     {
         $manager = FormPageManager::getInstance($form);
 
