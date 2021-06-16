@@ -14,17 +14,38 @@
       <trans-unit id="tl_form_field.blabel.1">
         <source>Please enter the label of the back button.</source>
       </trans-unit>
-      <trans-unit id="tl_form_field.guests.0">
-        <source>Show to guests only</source>
+      <trans-unit id="tl_form_field.addCondition.0">
+        <source>Add condition</source>
       </trans-unit>
-      <trans-unit id="tl_form_field.guests.1">
-        <source>Hide the form page if a member is logged in.</source>
+      <trans-unit id="tl_form_field.addCondition.1">
+        <source>Activate conditions for this form page.</source>
+      </trans-unit>
+      <trans-unit id="tl_form_field.condition.0">
+        <source>Condition</source>
+      </trans-unit>
+      <trans-unit id="tl_form_field.condition.1">
+        <source>Please enter the label of the form page here.</source>
+      </trans-unit>
+      <trans-unit id="tl_form_field.protected.0">
+        <source>Protect form page</source>
+      </trans-unit>
+      <trans-unit id="tl_form_field.protected.1">
+        <source>Restrict form page access to certain member groups.</source>
       </trans-unit>
       <trans-unit id="tl_form_field.groups.0">
         <source>Allowed member groups</source>
       </trans-unit>
       <trans-unit id="tl_form_field.groups.1">
         <source>These groups will be able to access the form page.</source>
+      </trans-unit>
+      <trans-unit id="tl_form_field.guests.0">
+        <source>Show to guests only</source>
+      </trans-unit>
+      <trans-unit id="tl_form_field.guests.1">
+        <source>Hide the form page if a member is logged in.</source>
+      </trans-unit>
+      <trans-unit id="tl_form_field.condition_legend">
+        <source>Conditions</source>
       </trans-unit>
     </body>
   </file>
