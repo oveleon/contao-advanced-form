@@ -12,7 +12,7 @@ The contao advanced form bundle adds a new form-field (Formpage) to forms that c
 + [Important Information](#important-information)
 + [Options](#options)
 
-##Features
+## Features
 
 ---
 - Configurable formpage / pageswitch form-field with conditions for submitted values
@@ -21,7 +21,7 @@ The contao advanced form bundle adds a new form-field (Formpage) to forms that c
 - Sends all collected data on specific form page
 - Compatible with all form-fields from contao
 
-##How to install the package
+## How to install the package
 
 ---
 
@@ -33,7 +33,7 @@ composer require oveleon/contao-advanced-form
 
 After installing the contao-advanced-form-bundle, you should run a contao install to add the new fields.
 
-##How does contao advanced form work
+## How does contao advanced form work
 
 ---
 
@@ -42,7 +42,7 @@ Once the installation is complete, you will be able to use a new field type call
 The 'formpage' form-field acts as a page-switch and you will be redirected to it if the condition from previous submitted values is met.
 
 
-##Initial setup
+## Initial setup
 
 ---
 
@@ -60,7 +60,7 @@ The 'formpage' form-field acts as a page-switch and you will be redirected to it
 4. In case you want a button to get to your previous page, add a 'back button label' as well
 
 
-##Advanced setup for conditions
+## Advanced setup for conditions
 
 ---
 
@@ -77,11 +77,11 @@ The 'formpage' form-field acts as a page-switch and you will be redirected to it
    ![Admin View: Advanced form overview](https://www.oveleon.de/share/github-assets/contao-advanced-form/advanced-form-page-switch.jpg)
 
 
-##Important Information
+## Important Information
 
 ---
 
-###Creating Form Pages
+### Creating Form Pages
 
 ---
 
@@ -91,7 +91,7 @@ The 'formpage' form-field acts as a page-switch and you will be redirected to it
 
 - The last field in your form needs to be a 'Formpage'-field, otherwise it will show all form-fields (This is great to debug through your form).
 
-###Conditions
+### Conditions
 
 > Conditions within page-switches (Formpages) will always work for the 
 >
@@ -99,7 +99,7 @@ The 'formpage' form-field acts as a page-switch and you will be redirected to it
 > 
 > form-fields up to the next page-switch (Formpage)
 
-###Syntax
+### Syntax
 ```
  ${Field name of radio button menu} == '{Value of radio button menu}'
 ```
@@ -110,7 +110,7 @@ A radio button menu with a field name of **'Example1'**, and a submitted value o
 
 You are able to set-up complex conditions to show a certain form-page.
 
-###Buttons
+### Buttons
 
 > The submit-button and back-button are set up for the 
 > 
@@ -118,7 +118,7 @@ You are able to set-up complex conditions to show a certain form-page.
 > 
 > form-page. They will work for the form-fields above the page-switch (Formpage).
 
-###Classes
+### Classes
 
 > Classes will always be set for the 
 >
@@ -126,7 +126,7 @@ You are able to set-up complex conditions to show a certain form-page.
 >
 > form-page. They will work for the form-fields above the page-switch (Formpage).
 
-###Protecting and hiding form-pages
+### Protecting and hiding form-pages
 
 > Using the option *'protect form page'* and *'show to guests only'*, will always work for the 
 >
@@ -135,7 +135,7 @@ You are able to set-up complex conditions to show a certain form-page.
 > form-page. They will work for the form-fields above the page-switch (Formpage).
 >
 
-##Options
+## Options
 
 ---
 
