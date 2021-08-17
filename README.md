@@ -1,7 +1,5 @@
 # Contao Advanced Form
 
----
-
 The contao advanced form bundle adds a new form-field (Formpage) to forms that can be used for multipage-forms with conditions
 
 + [Features](#features)
@@ -14,7 +12,6 @@ The contao advanced form bundle adds a new form-field (Formpage) to forms that c
 
 ## Features
 
----
 - Configurable formpage / pageswitch form-field with conditions for submitted values
 - A Guest mode to show specific form pages for guests only
 - Does not display form-pages when conditions are not met
@@ -22,8 +19,6 @@ The contao advanced form bundle adds a new form-field (Formpage) to forms that c
 - Compatible with all form-fields from contao
 
 ## How to install the package
-
----
 
 Install the package by using following command:
 
@@ -35,16 +30,12 @@ After installing the contao-advanced-form-bundle, you should run a contao instal
 
 ## How does contao advanced form work
 
----
-
 Once the installation is complete, you will be able to use a new field type called "Formpage" within Contao Forms that does act as a divider for created form fields (i.e.: radio button menu, textarea, etc.).
 
 The 'formpage' form-field acts as a page-switch and you will be redirected to it if the condition from previous submitted values is met.
 
 
 ## Initial setup
-
----
 
 1. Set up your form as usual and create your form-fields
 
@@ -62,8 +53,6 @@ The 'formpage' form-field acts as a page-switch and you will be redirected to it
 
 ## Advanced setup for conditions
 
----
-
 1. Follow the initial setup mentioned above
 
 
@@ -78,12 +67,7 @@ The 'formpage' form-field acts as a page-switch and you will be redirected to it
 
 
 ## Important Information
-
----
-
 ### Creating Form Pages
-
----
 
 - The first form-page will always be divided by the first form-field and the first 'Formpage'-field.
 
@@ -136,8 +120,6 @@ You are able to set-up complex conditions to show a certain form-page.
 >
 
 ## Options
-
----
 
 | Option | Description |
 | --- |  --- |
