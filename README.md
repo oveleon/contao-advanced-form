@@ -2,6 +2,12 @@
 
 The contao advanced form bundle adds a new form-field (Formpage) to forms that can be used for multipage-forms with conditions
 
+---
+
+> Working with **Contao 4.9** and up to **Contao 4.12** (PHP ^7.4 and PHP 8)
+
+---
+
 + [Features](#features)
 + [How to install](#how-to-install-the-package)
 + [How does contao advanced form work?](#how-does-contao-advanced-form-work)
@@ -9,6 +15,9 @@ The contao advanced form bundle adds a new form-field (Formpage) to forms that c
 + [Advanced setup for conditions](#advanced-setup-for-conditions)
 + [Important Information](#important-information)
 + [Options](#options)
++ [Support](#support)
++ [License](#license)
++ [Sponsoring](#sponsoring)
 
 ## Features
 
@@ -128,3 +137,22 @@ You are able to set-up complex conditions to show a certain form-page.
 | **Add condition** | This checkbox will activate conditions. Your conditions can be written into the text-field |
 | **Protect form page** | Restricts the form page to certain member groups |
 | **Show to guests only** | Hides the form page if a member is logged in |
+
+
+## Support
+> We **only provide support** for **bugs, and feature requests**; please only post issues about these two topics.
+>
+> If you need help implementing Contao Advanced Form or you are just starting out with Contao, please contact us on our [website](https://www.oveleon.de/kontakt.html#kontaktformular),
+> visit the [Contao Community](https://community.contao.org/) or the [Contao Slack](https://join.slack.com/t/contao/shared_invite/enQtNjUzMjY4MDU0ODM3LWVjYWMzODVkZjM5NjdlNDRiZjk2OTI3OWVkMmQ1YjA0MTQ3YTljMjFjODkwYTllN2NkMDcxMThiNzMzZjZlOGU),
+> you will be able to find more help there.
+>
+> This will help us to keep the issues related to this plugin and solve them faster.
+
+
+## License
+
+This project is licensed under the AGPL-3.0 License — check  <a href="/oveleon/contao-advanced-form/blob/master/LICENSE">LICENSE</a> for more details.
+
+## Sponsoring
+
+If you find this plugin useful, please consider [sponsoring us](https://github.com/sponsors/oveleon) to help contribute to our time invested and to further development of this and other open source projects. Thank you for your support! - [Oveleon](https://www.oveleon.de).

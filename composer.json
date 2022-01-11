@@ -23,9 +23,9 @@
     }
   ],
   "require":{
-    "php":"^7.2",
+    "php": "^7.4 || ^8.0",
     "contao/core-bundle":"^4.9",
-    "codefog/contao-haste": "~4.24"
+    "codefog/contao-haste": "~4.25"
   },
   "require-dev": {
     "contao/manager-plugin": "^2.0"
@@ -50,7 +50,7 @@
   },
   "extra":{
     "branch-alias": {
-      "dev-main": "0.1.x-dev"
+      "dev-main": "0.2.x-dev"
     },
     "contao-manager-plugin": "Oveleon\\ContaoAdvancedForm\\ContaoManager\\Plugin"
   }
