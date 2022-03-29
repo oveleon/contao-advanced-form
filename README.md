@@ -110,7 +110,7 @@ The following PHP functions can be used within the condition:
 - in_array
 - str_contains
 
-If more functionality is needed, feel free to create a feature edit.
+If more functionality is needed, feel free to create a feature issue.
 
 ### Buttons
 
