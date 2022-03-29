@@ -12,7 +12,6 @@ use Contao\BackendTemplate;
 use Contao\FilesModel;
 use Contao\System;
 use Contao\Widget;
-use Patchwork\Utf8;
 
 /**
  * Class FormSubmit
@@ -63,7 +62,7 @@ class FormPageSwitch extends Widget
         if (TL_MODE == 'BE')
         {
             $objTemplate = new BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### ' . Utf8::strtoupper($GLOBALS['TL_LANG']['FFL']['pageSwitch'][0]) . ' :: ' . $this->label . ' ###' . ($this->addCondition ? ' (' . $this->condition . ')' : '');
+            $objTemplate->wildcard = '### ' . strtoupper($GLOBALS['TL_LANG']['FFL']['pageSwitch'][0]) . ' :: ' . $this->label . ' ###' . ($this->addCondition ? ' (' . $this->condition . ')' : '');
 
             return $objTemplate->parse();
         }
