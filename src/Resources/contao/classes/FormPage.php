@@ -113,6 +113,7 @@ class FormPage
             $expressionLanguage->addFunction(ExpressionFunction::fromPhp('strval'));
             $expressionLanguage->addFunction(ExpressionFunction::fromPhp('intval'));
             $expressionLanguage->addFunction(ExpressionFunction::fromPhp('in_array'));
+            $expressionLanguage->addFunction(ExpressionFunction::fromPhp('str_contains'));
 
             // Evaluate condition
             $accessible = $expressionLanguage->evaluate($condition, $submitted);
