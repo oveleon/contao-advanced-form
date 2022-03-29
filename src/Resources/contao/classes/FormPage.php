@@ -126,7 +126,7 @@ class FormPage
             {
                 $groups = StringUtil::deserialize($this->objPageSwitch->groups);
 
-                if (FE_USER_LOGGED_IN && !(empty($groups) || !is_array($groups) || !count(array_intersect($groups, $user->groups))))
+                if (FE_USER_LOGGED_IN && !(empty($groups) || !\is_array($groups) || !count(array_intersect($groups, $user->groups))))
                 {
                     $accessible = true;
                 }

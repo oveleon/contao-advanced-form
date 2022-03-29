@@ -142,7 +142,7 @@ class FormPageManager
         $form = $this->createDummyForm();
 
         // HOOK: compile form fields
-        if (isset($GLOBALS['TL_HOOKS']['compileFormFields']) && is_array($GLOBALS['TL_HOOKS']['compileFormFields']))
+        if (isset($GLOBALS['TL_HOOKS']['compileFormFields']) && \is_array($GLOBALS['TL_HOOKS']['compileFormFields']))
         {
             foreach ($GLOBALS['TL_HOOKS']['compileFormFields'] as $callback)
             {
@@ -153,7 +153,7 @@ class FormPageManager
                 }
 
                 $objCallback = System::importStatic($callback[0]);
-                $arrFormFields = $objCallback->{$callback[0]}->{$callback[1]}($arrFormFields, $this->getFormId(), $form);
+                $arrFormFields = $objCallback->{$callback[1]}($arrFormFields, $this->getFormId(), $form);
             }
         }
 
@@ -617,7 +617,7 @@ class FormPageManager
         $form = $this->createDummyForm();
 
         // HOOK: load form field callback
-        if (isset($GLOBALS['TL_HOOKS']['loadFormField']) && is_array($GLOBALS['TL_HOOKS']['loadFormField']))
+        if (isset($GLOBALS['TL_HOOKS']['loadFormField']) && \is_array($GLOBALS['TL_HOOKS']['loadFormField']))
         {
             foreach ($GLOBALS['TL_HOOKS']['loadFormField'] as $callback)
             {
