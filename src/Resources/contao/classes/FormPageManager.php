@@ -13,7 +13,6 @@ use Contao\FormCaptcha;
 use Contao\FormFieldModel;
 use Contao\FormModel;
 use Contao\Input;
-use Contao\Session;
 use Contao\System;
 use Contao\Widget;
 use Haste\Util\Url;
@@ -24,7 +23,7 @@ class FormPageManager
      * Instances
      * @var FormPageManager
      */
-    protected static $arrInstances = array();
+    protected static $arrInstances = [];
 
     /**
      * Form model
@@ -79,7 +78,7 @@ class FormPageManager
         }
 
         $formPage = new FormPage(null);
-        $this->arrFormPageMapper = array('start');
+        $this->arrFormPageMapper = ['start'];
 
         foreach ($this->arrFormFields as $objFormField)
         {
@@ -451,6 +450,18 @@ class FormPageManager
         $arrLabels    = [];
         $arrFiles     = [];
 
+        $arrFormFields = [];
+
+        if (!!$this->arrFormFields)
+        {
+            foreach ($this->arrFormFields as $field)
+            {
+                $arrFormFields[] = $field->name;
+            }
+
+            $arrFormFields = array_fill_keys($arrFormFields, '');
+        }
+
         foreach ((array) $_SESSION['FORMSTORAGE'][$this->objForm->id] as $stepData)
         {
             $arrSubmitted = array_merge($arrSubmitted, (array) $stepData['submitted']);
@@ -458,12 +469,13 @@ class FormPageManager
             $arrFiles     = array_merge($arrFiles, (array) $stepData['files']);
         }
 
-        return array
-        (
-            'submitted' => $arrSubmitted,
-            'labels'    => $arrLabels,
-            'files'     => $arrFiles
-        );
+        return [
+            'fieldset'          => $arrFormFields,
+            'submitted'         => $arrSubmitted,
+            'fieldsetSubmitted' => array_merge($arrFormFields, $arrSubmitted),
+            'labels'            => $arrLabels,
+            'files'             => $arrFiles
+        ];
     }
 
     /**
@@ -737,8 +749,8 @@ class FormPageManager
         // Special handling for captcha field
         if ($objWidget instanceof FormCaptcha)
         {
-            $session = Session::getInstance();
-            $captcha = $session->get('captcha_' . $objWidget->id);
+            $objSession = System::getContainer()->get('session');
+            $captcha = $objSession->get('captcha_' . $objWidget->id);
 
             return isset($_POST[$captcha['key']]);
         }
