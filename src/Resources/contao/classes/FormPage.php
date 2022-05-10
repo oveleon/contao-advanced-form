@@ -13,6 +13,8 @@ use Contao\FormFieldModel;
 use Contao\FrontendUser;
 use Contao\StringUtil;
 use Contao\System;
+use Symfony\Component\ExpressionLanguage\ExpressionFunction;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 class FormPage
 {
@@ -85,10 +87,10 @@ class FormPage
 
     protected function generateCondition($strCondition)
     {
-        $strCondition = str_replace('in_array', '@in_array', $strCondition);
-        $strCondition = preg_replace("/\\$([A-Za-z0-9_]+)/u", '$arrPost[\'$1\']', $strCondition);
+        $strCondition = preg_replace("/\\$([A-Za-z0-9_]+)/u", '$1', $strCondition);
+        $strCondition = html_entity_decode($strCondition);
 
-        return 'return (' . $strCondition . ');';
+        return $strCondition;
     }
 
     public function isAccessible($manager)
@@ -105,11 +107,16 @@ class FormPage
             $condition = $this->generateCondition($this->objPageSwitch->condition);
             $submitted = $manager->getDataOfAllSteps()['submitted'];
 
-            $callableCondition = function ($arrPost) use ($condition) {
-                return eval($condition);
-            };
+            // Create EL and register native php functions
+            $expressionLanguage = new ExpressionLanguage();
+            $expressionLanguage->addFunction(ExpressionFunction::fromPhp('floatval'));
+            $expressionLanguage->addFunction(ExpressionFunction::fromPhp('strval'));
+            $expressionLanguage->addFunction(ExpressionFunction::fromPhp('intval'));
+            $expressionLanguage->addFunction(ExpressionFunction::fromPhp('in_array'));
+            $expressionLanguage->addFunction(ExpressionFunction::fromPhp('str_contains'));
 
-             $accessible = $callableCondition($submitted);
+            // Evaluate condition
+            $accessible = $expressionLanguage->evaluate($condition, $submitted);
         }
 
         if ($accessible)

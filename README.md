@@ -102,6 +102,15 @@ A radio button menu with a field name of **'Example1'**, and a submitted value o
 ```
 
 You are able to set-up complex conditions to show a certain form-page.
+The following PHP functions can be used within the condition:
+
+- floatval
+- strval
+- intval
+- in_array
+- str_contains
+
+If more functionality is needed, feel free to create a feature issue.
 
 ### Buttons
 
