@@ -105,7 +105,7 @@ class FormPage
         if ($this->objPageSwitch->addCondition)
         {
             $condition = $this->generateCondition($this->objPageSwitch->condition);
-            $submitted = $manager->getDataOfAllSteps()['submitted'];
+            $submitted = $manager->getDataOfAllSteps()['fieldsetSubmitted'];
 
             // Create EL and register native php functions
             $expressionLanguage = new ExpressionLanguage();
@@ -121,9 +121,10 @@ class FormPage
 
         if ($accessible)
         {
+            $blnFeUserLoggedIn = System::getContainer()->get('contao.security.token_checker')->hasFrontendUser();
             $user = System::importStatic(FrontendUser::class, 'User');
 
-            if ($this->objPageSwitch->guests && FE_USER_LOGGED_IN)
+            if ($this->objPageSwitch->guests && $blnFeUserLoggedIn)
             {
                 $accessible = false;
             }
@@ -132,7 +133,7 @@ class FormPage
             {
                 $groups = StringUtil::deserialize($this->objPageSwitch->groups);
 
-                if (FE_USER_LOGGED_IN && !(empty($groups) || !\is_array($groups) || !count(array_intersect($groups, $user->groups))))
+                if ($blnFeUserLoggedIn && !(empty($groups) || !\is_array($groups) || !count(array_intersect($groups, $user->groups))))
                 {
                     $accessible = true;
                 }
