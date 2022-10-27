@@ -436,6 +436,11 @@ class FormPageManager
      */
     public function getDataOfStep($step)
     {
+        if (!isset($_SESSION['FORMSTORAGE'][$this->objForm->id][$step]))
+        {
+            return [];
+        }
+
         return (array) $_SESSION['FORMSTORAGE'][$this->objForm->id][$step];
     }
 
@@ -501,6 +506,11 @@ class FormPageManager
      */
     public function getPreviousStepsWereInvalid()
     {
+        if (!isset($_SESSION['FORMSTORAGE_PSWI'][$this->objForm->id]))
+        {
+            return false;
+        }
+
         return $_SESSION['FORMSTORAGE_PSWI'][$this->objForm->id] === true;
     }
 
@@ -629,7 +639,7 @@ class FormPageManager
         $form = $this->createDummyForm();
 
         // HOOK: load form field callback
-        if (isset($GLOBALS['TL_HOOKS']['loadFormField']) && \is_array($GLOBALS['TL_HOOKS']['loadFormField']))
+        if (isset($GLOBALS['TL_HOOKS']['loadFormField']) && is_array($GLOBALS['TL_HOOKS']['loadFormField']))
         {
             foreach ($GLOBALS['TL_HOOKS']['loadFormField'] as $callback)
             {
@@ -703,7 +713,10 @@ class FormPageManager
     protected function createDummyForm()
     {
         $form = new \stdClass();
-        $form->form = $this->objForm->id;
+        $form->form =       $this->objForm->id;
+        $form->headline =   null;
+        $form->typePrefix = null;
+        $form->cssID =      null;
 
         return new Form($form);
     }
