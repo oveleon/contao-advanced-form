@@ -68,7 +68,7 @@ class FormPage
                 return $this->accessible;
 
             case 'alias':
-                return $this->objPageSwitch->formPageAlias ?: 'start';
+                return $this->objPageSwitch->formPageAlias ?? 'start';
 
         }
 
