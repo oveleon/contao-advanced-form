@@ -8,7 +8,6 @@
 
 namespace Oveleon\ContaoAdvancedForm;
 
-use Contao\Form;
 use Contao\FormFieldModel;
 use Contao\FrontendUser;
 use Contao\StringUtil;

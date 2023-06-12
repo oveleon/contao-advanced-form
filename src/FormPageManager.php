@@ -8,6 +8,7 @@
 
 namespace Oveleon\ContaoAdvancedForm;
 
+use Contao\Controller;
 use Contao\Form;
 use Contao\FormCaptcha;
 use Contao\FormFieldModel;
@@ -16,54 +17,22 @@ use Contao\Input;
 use Contao\System;
 use Contao\Widget;
 use Haste\Util\Url;
+use Oveleon\ContaoAdvancedForm\EventListener\CompileFormFieldsListener;
 
 class FormPageManager
 {
-    /**
-     * Instances
-     * @var FormPageManager
-     */
-    protected static $arrInstances = [];
+    protected static array $arrInstances = [];
+    protected array $formFields;
+    protected array $formPages;
+    protected array $formPageMapper;
 
-    /**
-     * Form model
-     * @var FormModel
-     */
     protected $objForm;
 
-    /**
-     * Form field models
-     * @var FormFieldModel[]
-     */
-    protected $arrFormFields;
+    private bool $isValid = true;
 
-    /**
-     * @var FormPage[]
-     */
-    protected $arrFormPages;
-
-    /**
-     * @var array
-     */
-    protected $arrFormPageMapper;
-
-    /**
-     * True if the manager can handle this form
-     *
-     * @var bool
-     */
-    private $isValid = true;
-
-    /**
-     * Initialize the object
-     *
-     * @param Form $form
-     */
-    protected function __construct($form)
+    protected function __construct(Form $form)
     {
-        $this->objForm = $form->getModel();
-
-        if ($this->objForm === null)
+        if (null === ($this->objForm = $form->getModel()))
         {
             $this->isValid = false;
             return;
@@ -71,34 +40,34 @@ class FormPageManager
 
         $this->loadFormFieldModels();
 
-        if (count($this->arrFormFields) === 0)
+        if (0 === count($this->formFields))
         {
             $this->isValid = false;
             return;
         }
 
         $formPage = new FormPage(null);
-        $this->arrFormPageMapper = ['start'];
+        $this->formPageMapper = ['start'];
 
-        foreach ($this->arrFormFields as $objFormField)
+        foreach ($this->formFields as $objFormField)
         {
             $formPage->addField($objFormField);
 
             if ($this->isPageBreak($objFormField))
             {
-                $this->arrFormPages[] = $formPage;
+                $this->formPages[] = $formPage;
 
                 $formPage = new FormPage($objFormField);
-                $this->arrFormPageMapper[] = $objFormField->formPageAlias ?: strval(count($this->arrFormPageMapper));
+                $this->formPageMapper[] = $objFormField->formPageAlias ?: strval(count($this->formPageMapper));
             }
 
-            if ($objFormField->type === 'submit')
+            if ('submit' === $objFormField->type)
             {
                 $this->isValid = false;
             }
         }
 
-        $this->arrFormPages[] = $formPage;
+        $this->formPages[] = $formPage;
     }
 
     /**
@@ -110,32 +79,28 @@ class FormPageManager
 
     /**
      * Get one object instance per table
-     *
-     * @param Form $form       The form object
-     *
-     * @return FormPageManager The object instance
      */
-    public static function getInstance($form)
+    public static function getInstance(Form $form): FormPageManager
     {
-        if (!isset(static::$arrInstances[$form->id]))
+        if (!isset(self::$arrInstances[$form->id]))
         {
-            static::$arrInstances[$form->id] = new static($form);
+            self::$arrInstances[$form->id] = new static($form);
         }
 
-        return static::$arrInstances[$form->id];
+        return self::$arrInstances[$form->id];
     }
 
     /**
      * Loads the form field models (calling the compileFormFields hook).
      */
-    protected function loadFormFieldModels()
+    protected function loadFormFieldModels(): void
     {
         $objFormFields = FormFieldModel::findPublishedByPid($this->objForm->id);
-        $arrFormFields = [];
+        $formFields = [];
 
         if ($objFormFields !== null)
         {
-            $arrFormFields = $objFormFields->getModels();
+            $formFields = $objFormFields->getModels();
         }
 
         $form = $this->createDummyForm();
@@ -146,69 +111,59 @@ class FormPageManager
             foreach ($GLOBALS['TL_HOOKS']['compileFormFields'] as $callback)
             {
                 // Do not call ourselves recursively
-                if ($callback[0] === 'Oveleon\ContaoAdvancedForm\AdvancedForm')
+                if ($callback[0] === CompileFormFieldsListener::class)
                 {
                     continue;
                 }
 
                 $objCallback = System::importStatic($callback[0]);
-                $arrFormFields = $objCallback->{$callback[1]}($arrFormFields, $this->getFormId(), $form);
+                $formFields = $objCallback->{$callback[1]}($formFields, $this->getFormId(), $form);
             }
         }
 
-        $this->arrFormFields = $arrFormFields;
+        $this->formFields = $formFields;
     }
 
     /**
      * Gets the form generator form id.
-     *
-     * @return string
      */
-    public function getFormId()
+    public function getFormId(): string
     {
         return ($this->objForm->formID !== '') ? 'auto_' . $this->objForm->formID : 'auto_form_' . $this->objForm->id;
     }
 
     /**
      * Check whether a form field is of type page switch.
-     *
-     * @param FormFieldModel $objFormField
-     *
-     * @return bool
      */
-    public function isPageBreak(FormFieldModel $objFormField)
+    public function isPageBreak(FormFieldModel $objFormField): bool
     {
-        return $objFormField->type == 'pageSwitch';
+        return 'pageSwitch' === $objFormField->type;
     }
 
     /**
      * Checks if the combination is valid.
-     *
-     * @return bool
      */
-    public function isValidFormFieldCombination()
+    public function isValidFormFieldCombination(): bool
     {
         return $this->isValid;
     }
 
     /**
      * Get the fields without the page breaks.
-     *
-     * @return FormFieldModel[]
      */
-    public function getFieldsWithoutPageBreaks()
+    public function getFieldsWithoutPageBreaks(): array
     {
-        $arrFormFields = $this->arrFormFields;
+        $formFields = $this->formFields;
 
-        foreach ($arrFormFields as $k => $objFormField)
+        foreach ($formFields as $k => $objFormField)
         {
-            if ($objFormField->type === 'pageSwitch')
+            if ('pageSwitch' === $objFormField->type)
             {
-                unset($arrFormFields[$k]);
+                unset($formFields[$k]);
             }
         }
 
-        return $arrFormFields;
+        return $formFields;
     }
 
     /**
@@ -220,9 +175,12 @@ class FormPageManager
      */
     public function getUrlForStep($step)
     {
+        //return
+
+
         $stepParam = $this->getStepParam();
 
-        if ($step === '')
+        if ('' === $step)
         {
             $url = Url::removeQueryString([$stepParam]);
         }
@@ -243,7 +201,7 @@ class FormPageManager
      */
     public function hasStep($step)
     {
-        return isset($this->arrFormPages[array_search($step, $this->arrFormPageMapper)]);
+        return isset($this->formPages[array_search($step, $this->formPageMapper)]);
     }
 
     /**
@@ -255,7 +213,7 @@ class FormPageManager
      */
     protected function getFormPageForStep($step)
     {
-        return $this->arrFormPages[array_search($step, $this->arrFormPageMapper)];
+        return $this->formPages[array_search($step, $this->formPageMapper)];
     }
 
     /**
@@ -303,16 +261,16 @@ class FormPageManager
     {
         $currentAlias = $this->getCurrentStep();
 
-        if (($index = array_search($currentAlias, $this->arrFormPageMapper)) !== false)
+        if (($index = array_search($currentAlias, $this->formPageMapper)) !== false)
         {
-            for ($index++ ;$index < count($this->arrFormPageMapper); $index++)
+            for ($index++ ;$index < count($this->formPageMapper); $index++)
             {
-                if (!$this->arrFormPages[$index]->isAccessible($this))
+                if (!$this->formPages[$index]->isAccessible($this))
                 {
                     continue;
                 }
 
-                return $this->arrFormPages[$index]->alias;
+                return $this->formPages[$index]->alias;
             }
         }
     }
@@ -326,16 +284,16 @@ class FormPageManager
     {
         $currentAlias = $this->getCurrentStep();
 
-        if (($index = array_search($currentAlias, $this->arrFormPageMapper)) !== false)
+        if (($index = array_search($currentAlias, $this->formPageMapper)) !== false)
         {
             for ($index-- ;$index >= 0; $index--)
             {
-                if (!$this->arrFormPages[$index]->isAccessible($this))
+                if (!$this->formPages[$index]->isAccessible($this))
                 {
                     continue;
                 }
 
-                return $this->arrFormPages[$index]->alias;
+                return $this->formPages[$index]->alias;
             }
         }
     }
@@ -347,7 +305,7 @@ class FormPageManager
      */
     public function getLastStep()
     {
-        return $this->arrFormPages[(count($this->arrFormPages) - 1)]->alias;
+        return $this->formPages[(count($this->formPages) - 1)]->alias;
     }
 
     /**
@@ -372,8 +330,8 @@ class FormPageManager
      */
     public function isLastStep()
     {
-        $currentIndex = array_search($this->getCurrentStep(), $this->arrFormPageMapper);
-        $targetIndex  = (count($this->arrFormPageMapper) - 2);
+        $currentIndex = array_search($this->getCurrentStep(), $this->formPageMapper);
+        $targetIndex  = (count($this->formPageMapper) - 2);
 
         if ($currentIndex >= $targetIndex)
         {
@@ -382,7 +340,7 @@ class FormPageManager
 
         for (++$currentIndex; $currentIndex <= $targetIndex; $currentIndex++)
         {
-            if ($this->arrFormPages[$currentIndex]->isAccessible($this))
+            if ($this->formPages[$currentIndex]->isAccessible($this))
             {
                 return false;
             }
@@ -455,16 +413,16 @@ class FormPageManager
         $arrLabels    = [];
         $arrFiles     = [];
 
-        $arrFormFields = [];
+        $formFields = [];
 
-        if (!!$this->arrFormFields)
+        if (!!$this->formFields)
         {
-            foreach ($this->arrFormFields as $field)
+            foreach ($this->formFields as $field)
             {
-                $arrFormFields[] = $field->name;
+                $formFields[] = $field->name;
             }
 
-            $arrFormFields = array_fill_keys($arrFormFields, '');
+            $formFields = array_fill_keys($formFields, '');
         }
 
         foreach ((array) $_SESSION['FORMSTORAGE'][$this->objForm->id] as $stepData)
@@ -475,9 +433,9 @@ class FormPageManager
         }
 
         return [
-            'fieldset'          => $arrFormFields,
+            'fieldset'          => $formFields,
             'submitted'         => $arrSubmitted,
-            'fieldsetSubmitted' => array_merge($arrFormFields, $arrSubmitted),
+            'fieldsetSubmitted' => array_merge($formFields, $arrSubmitted),
             'labels'            => $arrLabels,
             'files'             => $arrFiles
         ];
@@ -567,10 +525,10 @@ class FormPageManager
     {
         if ($stepTo === null)
         {
-            $stepTo = $this->arrFormPageMapper[(count($this->arrFormPageMapper) - 1)];
+            $stepTo = $this->formPageMapper[(count($this->formPageMapper) - 1)];
         }
 
-        foreach ($this->arrFormPageMapper as $step)
+        foreach ($this->formPageMapper as $step)
         {
             if (!$this->getFormPageForStep($step)->isAccessible($this))
             {
@@ -769,5 +727,17 @@ class FormPageManager
         }
 
         return isset($_POST[$objWidget->name]);
+    }
+
+    /**
+     * Redirect to step.
+     *
+     * @param FormPageManager $manager
+     * @param string          $step
+     */
+    public function redirectToStep(FormPageManager $manager, $step)
+    {
+        // ToDo: RedirectResponseException
+        Controller::redirect($manager->getUrlForStep($step));
     }
 }

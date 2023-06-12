@@ -6,7 +6,7 @@
  * (c) https://www.oveleon.de/
  */
 
-namespace Oveleon\ContaoAdvancedForm;
+namespace Oveleon\ContaoAdvancedForm\Widget;
 
 use Contao\BackendTemplate;
 use Contao\FilesModel;
