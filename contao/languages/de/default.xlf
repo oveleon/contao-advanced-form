@@ -1,11 +1,13 @@
 <?xml version="1.0" ?><xliff version="1.1">
-  <file datatype="php" original="src/Resources/contao/languages/en/default.php" source-language="en">
+  <file datatype="php" original="contao/languages/en/default.php" source-language="en" target-language="de">
     <body>
       <trans-unit id="FFL.pageSwitch.0">
         <source>Formpage</source>
+        <target>Formularseite</target>
       </trans-unit>
       <trans-unit id="FFL.pageSwitch.1">
         <source>Divides form fields.</source>
+        <target>Unterteilt Formularfelder.</target>
       </trans-unit>
     </body>
   </file>
