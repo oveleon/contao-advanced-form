@@ -270,7 +270,7 @@ class FormPageManager
                     continue;
                 }
 
-                return $this->formPages[$index]->alias;
+                return $this->formPageMapper[$index];
             }
         }
     }
