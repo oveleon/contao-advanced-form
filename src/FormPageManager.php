@@ -16,7 +16,7 @@ use Contao\FormModel;
 use Contao\Input;
 use Contao\System;
 use Contao\Widget;
-use Haste\Util\Url;
+use Codefog\HasteBundle\UrlParser;
 use Oveleon\ContaoAdvancedForm\EventListener\CompileFormFieldsListener;
 
 class FormPageManager
@@ -182,11 +182,11 @@ class FormPageManager
 
         if ('' === $step)
         {
-            $url = Url::removeQueryString([$stepParam]);
+            $url = UrlParser::removeQueryString([$stepParam]);
         }
         else
         {
-            $url = Url::addQueryString($stepParam . '=' . $step);
+            $url = UrlParser::addQueryString($stepParam . '=' . $step);
         }
 
         return $url;
