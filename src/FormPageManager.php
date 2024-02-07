@@ -176,17 +176,17 @@ class FormPageManager
     public function getUrlForStep($step)
     {
         //return
-
+        $urlParse = new UrlParser();
 
         $stepParam = $this->getStepParam();
 
         if ('' === $step)
         {
-            $url = UrlParser::removeQueryString([$stepParam]);
+            $url = $urlParse->removeQueryString([$stepParam]);
         }
         else
         {
-            $url = UrlParser::addQueryString($stepParam . '=' . $step);
+            $url = $urlParse->addQueryString($stepParam . '=' . $step);
         }
 
         return $url;
