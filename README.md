@@ -5,6 +5,7 @@ The contao advanced form bundle adds a new form-field (Formpage) to forms that c
 ---
 
 > Working with **Contao 4.9** and up to **Contao 4.13** (PHP ^7.4 and PHP 8)
+> Cannot be installed together with [MP_Forms from Terminal24](https://github.com/terminal42/contao-mp_forms)
 
 ---
 
@@ -37,12 +38,13 @@ composer require oveleon/contao-advanced-form
 
 After installing the contao-advanced-form-bundle, you should run a contao install to add the new fields.
 
+The extension cannot be used or installed at the same time as [MP_Forms from Terminal24](https://github.com/terminal42/contao-mp_forms)
+
 ## How does contao advanced form work
 
 Once the installation is complete, you will be able to use a new field type called "Formpage" within Contao Forms that does act as a divider for created form fields (i.e.: radio button menu, textarea, etc.).
 
 The 'formpage' form-field acts as a page-switch and you will be redirected to it if the condition from previous submitted values is met.
-
 
 ## Initial setup
 
