@@ -13,9 +13,15 @@ use Contao\Form;
 use Contao\FormFieldModel;
 use Contao\Input;
 use Contao\Widget;
+use Oveleon\ContaoAdvancedForm\FormHandler;
 
 class AdvancedForm
 {
+    /**
+     * @var array<FormHandler>
+     */
+
+    private array $handlers = [];
     /**
      * Adjust form fields to given page.
      *
@@ -32,6 +38,10 @@ class AdvancedForm
         }
 
         $manager = FormPageManager::getInstance($form);
+
+        if (!isset($this->handlers[$formId])) {
+            $this->handlers[$formId] = new FormHandler($form, $arrFields, $manager);
+        }
 
         // Don't try to render multi page form if no valid combination
         if (!$manager->isValidFormFieldCombination())
