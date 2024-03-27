@@ -38,20 +38,25 @@ class FormHandler
         $this->formManager = $manager;
 
         $conditions = false;
-        foreach ($fields as $field) {
-            if ('fieldsetStart' === $field->type && $field->isConditionalFormField) {
+
+        foreach ($fields as $field)
+        {
+            if ('fieldsetStart' === $field->type && $field->isConditionalFormField)
+            {
                 $conditions = true;
                 break;
             }
         }
 
-        if ($conditions) {
+        if ($conditions)
+        {
             // Add CSS class for current form.
             $formAttributes    = StringUtil::deserialize($form->attributes, true);
             $formAttributes[1] = \trim(($formAttributes[1] ?? '') . ' cff');
 
             // Add data of previous steps as JSON at form tag.
-            if (!empty($previousData = $this->getPreviousDataFromAdvForms())) {
+            if (!empty($previousData = $this->getPreviousDataFromAdvForms()))
+            {
                 $formAttributes[1] .= '" data-cff-previous="' .
                                       StringUtil::specialcharsAttribute(
                                           \json_encode($previousData, JSON_THROW_ON_ERROR)
