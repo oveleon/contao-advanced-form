@@ -44,7 +44,8 @@
   },
   "conflict": {
     "contao/core": "*",
-    "contao/manager-plugin": "<2.0 || >=3.0"
+    "contao/manager-plugin": "<2.0 || >=3.0",
+    "terminal42/contao-mp_forms": "*"
   },
   "autoload": {
     "psr-4": {

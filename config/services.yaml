@@ -6,4 +6,4 @@ services:
 
   Oveleon\ContaoAdvancedForm\:
     resource: '../src/'
-    exclude: '../src/{Model,DependencyInjection,Resources}'
+    exclude: '../src/{Model,DependencyInjection,Resources,FormHandler.php}'

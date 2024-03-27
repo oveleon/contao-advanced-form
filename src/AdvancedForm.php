@@ -14,14 +14,22 @@ use Contao\FormFieldModel;
 use Contao\Input;
 use Contao\Widget;
 
+// @Todo - Remove this class completely
 class AdvancedForm
 {
+    /**
+     * @var array<FormHandler>
+     */
+    private array $handlers = [];
+
     /**
      * Adjust form fields to given page.
      *
      * @param FormFieldModel[] $arrFields
-     * @param string           $formId
-     * @param Form             $form
+     * @param string $formId
+     * @param Form $form
+     * @return FormFieldModel[]
+     * @throws \JsonException
      */
     public function compileFormFields($arrFields, $formId, Form $form)
     {
@@ -32,6 +40,11 @@ class AdvancedForm
         }
 
         $manager = FormPageManager::getInstance($form);
+
+        if (!isset($this->handlers[$formId]))
+        {
+            $this->handlers[$formId] = new FormHandler($form, $arrFields, $manager);
+        }
 
         // Don't try to render multi page form if no valid combination
         if (!$manager->isValidFormFieldCombination())
