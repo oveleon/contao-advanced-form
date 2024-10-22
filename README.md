@@ -162,7 +162,7 @@ If more functionality is needed, feel free to create a feature issue.
 
 ## License
 
-This project is licensed under the AGPL-3.0 License — check  <a href="/oveleon/contao-advanced-form/blob/master/LICENSE">LICENSE</a> for more details.
+This project is licensed under the AGPL-3.0 License — check  <a href="LICENSE">LICENSE</a> for more details.
 
 ## Sponsoring
 
