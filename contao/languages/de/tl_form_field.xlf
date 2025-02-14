@@ -55,7 +55,7 @@
       </trans-unit>
       <trans-unit id="tl_form_field.guests.1">
         <source>Hide the form page if a member is logged in.</source>
-        <target>Die Fromularseite verstecken, sobald ein Mitglied angemeldet ist.</target>
+        <target>Die Formularseite verstecken, sobald ein Mitglied angemeldet ist.</target>
       </trans-unit>
       <trans-unit id="tl_form_field.condition_legend">
         <source>Conditions</source>
