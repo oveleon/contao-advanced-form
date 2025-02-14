@@ -34,13 +34,16 @@
     }
   ],
   "require": {
-    "php": "^8.0",
-    "contao/core-bundle": "^4.13",
+    "php": "^8.1",
+    "contao/core-bundle": "^5.3",
     "codefog/contao-haste": "^5.0",
-    "symfony/expression-language": ">=4.4"
+    "symfony/expression-language": ">=4.4",
+    "symfony/config": "^6.4 || ^7.1",
+    "symfony/dependency-injection": "^6.4 || ^7.1",
+    "symfony/http-kernel": "^6.4 || ^7.1"
   },
   "require-dev": {
-    "contao/manager-plugin": "^2.0"
+    "contao/manager-plugin": "^2.3.1"
   },
   "conflict": {
     "contao/core": "*",
