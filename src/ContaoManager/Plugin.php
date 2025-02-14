@@ -3,9 +3,14 @@
 declare(strict_types=1);
 
 /*
- * This file is part of Oveleon ContaoAdvancedForm.
+ * This file is part of Oveleon Contao Advanced Form.
  *
- * (c) https://www.oveleon.de/
+ * @package     contao-advanced-form
+ * @license     AGPL-3.0
+ * @author      Fabian Ekert          <https://github.com/eki89>
+ * @author      Daniele Sciannimanica <https://github.com/doishub>
+ * @author      Sebastian Zoglowek    <https://github.com/zoglo>
+ * @copyright   Oveleon               <https://www.oveleon.de/>
  */
 
 namespace Oveleon\ContaoAdvancedForm\ContaoManager;
@@ -18,9 +23,6 @@ use Oveleon\ContaoAdvancedForm\ContaoAdvancedForm;
 
 class Plugin implements BundlePluginInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getBundles(ParserInterface $parser): array
     {
         return [
