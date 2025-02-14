@@ -1,9 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * This file is part of Oveleon ContaoAdvancedForm.
+ * This file is part of Oveleon Contao Advanced Form.
  *
- * (c) https://www.oveleon.de/
+ * @package     contao-advanced-form
+ * @license     AGPL-3.0
+ * @author      Fabian Ekert          <https://github.com/eki89>
+ * @author      Daniele Sciannimanica <https://github.com/doishub>
+ * @author      Sebastian Zoglowek    <https://github.com/zoglo>
+ * @copyright   Oveleon               <https://www.oveleon.de/>
  */
 
 namespace Oveleon\ContaoAdvancedForm\Widget;
@@ -14,57 +21,46 @@ use Contao\System;
 use Contao\Widget;
 
 /**
- * Class FormSubmit
- *
- * @property string  $singleSRC
- * @property boolean $imageSubmit
- * @property string  $src
- *
- * @author Fabian Ekert <fabian@oveleon.de>
+ * @property string $singleSRC
+ * @property bool   $imageSubmit
+ * @property string $src
+ * @property bool   $addCondition
+ * @property string $condition
  */
-class FormPageSwitch extends Widget
+class PageSwitch extends Widget
 {
-    /**
-     * Template
-     *
-     * @var string
-     */
     protected $strTemplate = 'form_pageSwitch';
 
-    /**
-     * The CSS class prefix
-     *
-     * @var string
-     */
     protected $strPrefix = 'widget widget-pageswitch';
 
     /**
-     * Do not validate this form field
-     *
-     * @param string
-     *
-     * @return string
+     * Skip form field validation.
      */
-    public function validator($input)
+    public function validator(mixed $varInput): mixed
     {
-        return $input;
+        return $varInput;
     }
 
     /**
-     * Parse the template file and return it as string
+     * Parse the template file and return it as string.
      *
      * @param array|null $arrAttributes An optional attributes array
      *
      * @return string The template markup
      */
-    public function parse($arrAttributes=null)
+    public function parse($arrAttributes = null): string
     {
         $request = System::getContainer()->get('request_stack')->getCurrentRequest();
 
         if ($request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request))
         {
             $objTemplate = new BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### ' . strtoupper($GLOBALS['TL_LANG']['FFL']['pageSwitch'][0]) . ' :: ' . $this->label . ' ###' . ($this->addCondition ? ' (' . $this->condition . ')' : '');
+            $objTemplate->title = $this->label;
+
+            if ($this->addCondition)
+            {
+                $objTemplate->wildcard = $this->condition;
+            }
 
             return $objTemplate->parse();
         }
@@ -85,10 +81,10 @@ class FormPageSwitch extends Widget
     /**
      * Old generate() method that must be implemented due to abstract declaration.
      *
-     * @throws BadMethodCallException
+     * @throws \BadMethodCallException
      */
-    public function generate()
+    public function generate(): void
     {
-        throw new BadMethodCallException('Calling generate() has been deprecated, you must use parse() instead!');
+        throw new \BadMethodCallException('Calling generate() has been deprecated, you must use parse() instead!');
     }
 }
