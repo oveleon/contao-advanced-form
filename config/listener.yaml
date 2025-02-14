@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autoconfigure: true
+
+    Oveleon\ContaoAdvancedForm\EventListener\CompileFormFieldsListener:
+        arguments:
+            - '@contao_advanced_form.form_page_manager'
+            - '@request_stack'
+
+    Oveleon\ContaoAdvancedForm\EventListener\LoadFormFieldListener:
+        arguments:
+            - '@contao_advanced_form.form_page_manager'
+
+    Oveleon\ContaoAdvancedForm\EventListener\PrepareFormDataListener:
+        arguments:

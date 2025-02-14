@@ -1,9 +1,13 @@
 services:
-  _defaults:
-    autowire: true
-    autoconfigure: true
-    public: true
+    _defaults:
+        autoconfigure: true
 
-  Oveleon\ContaoAdvancedForm\:
-    resource: '../src/'
-    exclude: '../src/{Model,DependencyInjection,Resources,FormHandler.php}'
+    contao_advanced_form.form_page_manager:
+        class: Oveleon\ContaoAdvancedForm\Service\FormPage\FormPageManagerFactory
+        arguments:
+            - '@request_stack'
+            - '@Codefog\HasteBundle\UrlParser'
+
+
+    # Autowiring aliases
+    Oveleon\ContaoAdvancedForm\Service\FormPage\FormPageManagerFactory: '@contao_advanced_form.form_page_manager'
