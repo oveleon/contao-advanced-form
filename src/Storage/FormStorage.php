@@ -36,11 +36,9 @@ class FormStorage
 
     public function saveStep(string $step, array $labels = []): void
     {
-        $submitted = $this->requestStack->getCurrentRequest()
-->request->all()
+        $submitted = $this->requestStack->getCurrentRequest()->request->all()
         ;
-        $files = $this->requestStack->getCurrentRequest()
-->files->all()
+        $files = $this->requestStack->getCurrentRequest()->files->all()
         ;
 
         // Make sure files are moved to our own tmp directory so they are
