@@ -308,7 +308,7 @@ class FormPageManager
 
     public function resetPreviousStepsWereInvalid(): void
     {
-        $this->storage->invalidatePreviousSteps();
+        $this->storage->resetInvalidation();
     }
 
     /**
@@ -320,6 +320,11 @@ class FormPageManager
     public function isStoredInData($fieldName, string|null $step = null, $key = 'submitted'): bool
     {
         $step ??= $this->getCurrentStep();
+
+        $test = isset($this->getDataOfStep($step)[$key])
+            && \array_key_exists($fieldName, $this->getDataOfStep($step)[$key]);
+
+        return $test;
 
         return isset($this->getDataOfStep($step)[$key])
             && \array_key_exists($fieldName, $this->getDataOfStep($step)[$key]);
@@ -395,10 +400,9 @@ class FormPageManager
     /**
      * Validates a field.
      *
-     * @param  int  $step
      * @return bool
      */
-    public function validateField(FormFieldModel $formField, $step)
+    public function validateField(FormFieldModel $formField, int|string|null $step)
     {
         $class = $GLOBALS['TL_FFL'][$formField->type];
 
@@ -448,6 +452,7 @@ class FormPageManager
             // Handle files
             if ($this->isStoredInData($objWidget->name, $step, 'files'))
             {
+                // ToDo: Handle this in storage
                 $_FILES[$objWidget->name] = $this->fetchFromData($objWidget->name, $step, 'files');
             }
 
