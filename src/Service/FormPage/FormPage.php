@@ -57,7 +57,7 @@ class FormPage
 
     public function isAccessible(FormPageManager $manager): mixed
     {
-        $accessible = !$this->pageSwitch?->formPageAccessible || $this->evaluateExpression($manager);
+        $accessible = !$this->pageSwitch || $this->evaluateExpression($manager);
 
         if (!$accessible)
         {

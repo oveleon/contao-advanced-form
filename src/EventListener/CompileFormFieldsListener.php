@@ -72,12 +72,12 @@ class CompileFormFieldsListener
 
         if (!$manager->isFirstStep() && $_POST === [])
         {
-            $vResult = $manager->validateSteps('start', $manager->getPreviousStep());
+            $valid = $manager->validateSteps('start', $manager->getPreviousStep());
 
-            if ($vResult !== true)
+            if (true !== $valid)
             {
                 $manager->setPreviousStepsWereInvalid();
-                $manager->redirectToStep($manager, $vResult);
+                $manager->redirectToStep($manager, $valid);
             }
         }
 
