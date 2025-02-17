@@ -15,15 +15,16 @@ declare(strict_types=1);
 
 namespace Oveleon\ContaoAdvancedForm\Storage;
 
-use Contao\System;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FormStorage
 {
     const FORM_STORAGE_IDENTIFIER = 'ADV_FORM_STORAGE';
-
     const FORM_INVALID_IDENTIFIER = 'ADV_FORM_INVALID';
+    const FILE_STORAGE_IDENTIFIER = 'advf';
 
     private readonly SessionInterface $session;
 
@@ -36,28 +37,23 @@ class FormStorage
 
     public function saveStep(string $step, array $labels = []): void
     {
-        $submitted = $this->requestStack->getCurrentRequest()->request->all()
-        ;
-        $files = $this->requestStack->getCurrentRequest()->files->all()
-        ;
+        $submitted = $this->requestStack->getCurrentRequest()->request->all();
+        $files = $this->requestStack->getCurrentRequest()->files->all();
 
         // Make sure files are moved to our own tmp directory so they are
         // kept across php processes
-        foreach ($files as $k => $file)
+        foreach ($files as &$file)
         {
-            // If the user marked the form field to upload the file into
-            // a certain directory, this check will return false and thus
-            // we won't move anything.
-            if (is_uploaded_file($file['tmp_name']))
+            if (!$file->isValid())
             {
-                $target = \sprintf('%s/system/tmp/mp_forms_%s.%s',
-                    System::getContainer()->getParameter('kernel.project_dir'),
-                    basename((string) $file['tmp_name']),
-                    $this->guessFileExtension($file),
-                );
-                move_uploaded_file($file['tmp_name'], $target);
-                $files[$k]['tmp_name'] = $target;
+                continue;
             }
+
+            $file = $this->normalizeFileUpload($file);
+
+            $target = (new Filesystem())->tempnam(sys_get_temp_dir(), self::FILE_STORAGE_IDENTIFIER);
+            move_uploaded_file($file['tmp_name'], $target);
+            $file['tmp_name'] = $target;
         }
 
         $storage = $this->session->get(self::FORM_STORAGE_IDENTIFIER, []);
@@ -73,6 +69,22 @@ class FormStorage
         ]));
     }
 
+    /**
+     * Normalizes the symfony uploaded file into a contao FormUpload style
+     */
+    private function normalizeFileUpload(UploadedFile $file): array
+    {
+        return [
+            'name' => pathinfo($file->getClientOriginalName(), \PATHINFO_FILENAME),
+            'type' => $file->guessExtension(),
+            'tmp_name' => $file->getPathname(),
+            'error' => $file->getError(),
+            'size' => $file->getSize(),
+            'uploaded' => true,
+            'uuid' => null,
+        ];
+    }
+
     public function getByStep(string $step): array
     {
         return $this->getStorage()[$step] ?? [];
@@ -85,6 +97,7 @@ class FormStorage
         if ($fields !== [])
         {
             $formFields = array_fill_keys(array_column($fields, 'name'), '');
+            unset($formFields['']); // Unset the empty key
         }
 
         foreach ($this->getStorage() as $stepData)
@@ -132,26 +145,5 @@ class FormStorage
         $storage = $this->session->get(self::FORM_STORAGE_IDENTIFIER, []);
 
         return $storage[$this->identifier] ?? [];
-    }
-
-    private function guessFileExtension(array $file): int|string
-    {
-        $extension = 'unknown';
-
-        if (!isset($file['type']))
-        {
-            return $extension;
-        }
-
-        foreach ($GLOBALS['TL_MIME'] as $ext => $data)
-        {
-            if ($data[0] === $file['type'])
-            {
-                $extension = $ext;
-                break;
-            }
-        }
-
-        return $extension;
     }
 }
