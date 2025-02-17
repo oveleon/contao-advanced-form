@@ -62,7 +62,7 @@ class FormStorage
 
         $storage = $this->session->get(self::FORM_STORAGE_IDENTIFIER, []);
 
-        $this->session->set(self::FORM_STORAGE_IDENTIFIER, array_merge($storage, [
+        $this->session->set(self::FORM_STORAGE_IDENTIFIER, array_replace_recursive($storage, [
             $this->identifier => [
                 $step => [
                     'submitted' => $submitted,
