@@ -55,11 +55,14 @@ class FormPage
         return $this->objFormFields;
     }
 
-    public function isAccessible(FormPageManager $manager): mixed
+    public function isAccessible(FormPageManager $manager): bool
     {
-        $accessible = !$this->pageSwitch || $this->evaluateExpression($manager);
+        if (null === $this->pageSwitch)
+        {
+            return true;
+        }
 
-        if (!$accessible)
+        if ($this->pageSwitch->addCondition && !$this->evaluateExpression($manager))
         {
             return false;
         }
@@ -67,19 +70,19 @@ class FormPage
         $container = System::getContainer();
         $feUserLoggedIn = $container->get('contao.security.token_checker')->hasFrontendUser();
 
-        if ($this->pageSwitch?->guests && $feUserLoggedIn)
+        if ($this->pageSwitch->guests && $feUserLoggedIn)
         {
             return false;
         }
 
-        if (!$this->pageSwitch?->protected)
+        if (!$this->pageSwitch->protected)
         {
             return true;
         }
 
         if (
             !$feUserLoggedIn
-            || [] === ($groups = StringUtil::deserialize($this->pageSwitch?->groups, true))
+            || [] === ($groups = StringUtil::deserialize($this->pageSwitch->groups, true))
         ) {
             return false;
         }
