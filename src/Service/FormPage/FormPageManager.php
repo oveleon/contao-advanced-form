@@ -293,7 +293,7 @@ class FormPageManager
 
     public function resetData(): void
     {
-        unset($_SESSION['FORMSTORAGE'][$this->form->id]);
+        $this->storage->reset();
     }
 
     public function setPreviousStepsWereInvalid(): void
