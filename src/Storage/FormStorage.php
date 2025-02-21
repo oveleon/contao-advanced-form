@@ -44,13 +44,15 @@ class FormStorage
         // kept across php processes
         foreach ($files as &$file)
         {
-            if (!$file->isValid())
+            if (null === $file || !$file->isValid())
             {
                 continue;
             }
 
             $file = $this->normalizeFileUpload($file);
 
+            // ToDo: Save the files within the contao directory
+            // Windows
             $target = (new Filesystem())->tempnam(sys_get_temp_dir(), self::FILE_STORAGE_IDENTIFIER);
             move_uploaded_file($file['tmp_name'], $target);
             $file['tmp_name'] = $target;
