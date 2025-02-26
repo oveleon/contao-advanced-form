@@ -47,7 +47,7 @@ class CompileFormFieldsListener
 
         $manager = $this->formPageManagerFactory->getForForm($form);
 
-        // ToDo: Unnecessary stuff that can't be tested
+        // Can't test this
         /*if (!isset($this->handlers[$formId]))
         {
             $this->handlers[$formId] = new FormHandler($form, $fields, $manager);
@@ -65,9 +65,7 @@ class CompileFormFieldsListener
             $manager->redirectToStep($manager, $manager->getPreviousStep());
         }
 
-        // $data = $manager->getDataOfAllSteps();
-
-        if (!$manager->isFirstStep() && $_POST === [])
+        if (!$manager->isFirstStep() && [] === $request->request->all())
         {
             $valid = $manager->validateSteps('start', $manager->getPreviousStep());
 
