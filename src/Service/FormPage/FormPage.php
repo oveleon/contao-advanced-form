@@ -57,7 +57,7 @@ class FormPage
 
     public function isAccessible(FormPageManager $manager): bool
     {
-        if (null === $this->pageSwitch)
+        if (!$this->pageSwitch instanceof FormFieldModel)
         {
             return true;
         }

@@ -45,10 +45,13 @@ class FormPageManager
 
     private bool $isValid = true;
 
+    private array $files = [];
+
     public function __construct(
         Form $form,
         private readonly RequestStack $requestStack,
         private readonly UrlParser $urlParser,
+        private readonly string $projectDir,
     ) {
         if (null === ($this->form = $form->getModel()))
         {
@@ -58,7 +61,7 @@ class FormPageManager
         }
 
         $this->session = $this->requestStack->getSession();
-        $this->storage = new FormStorage((string) $this->form->id, $this->requestStack);
+        $this->storage = new FormStorage((string) $this->form->id, $this->projectDir, $this->requestStack);
 
         $this->loadFormFieldModels();
 
@@ -98,33 +101,21 @@ class FormPageManager
         return $this->getCurrentStep() === 'start';
     }
 
-    /**
-     * Gets the form generator form id.
-     */
     public function getFormId(): string
     {
         return $this->form->formID !== '' ? 'auto_' . $this->form->formID : 'auto_form_' . $this->form->id;
     }
 
-    /**
-     * Check whether a form field is of type page switch.
-     */
     public function isPageBreak(FormFieldModel $objFormField): bool
     {
         return $objFormField->type === 'pageSwitch';
     }
 
-    /**
-     * Checks if the combination is valid.
-     */
     public function isValidFormFieldCombination(): bool
     {
         return $this->isValid;
     }
 
-    /**
-     * Get the fields without the page breaks.
-     */
     public function getFieldsWithoutPageBreaks(): array
     {
         $formFields = $this->formFields;
@@ -140,9 +131,6 @@ class FormPageManager
         return $formFields;
     }
 
-    /**
-     * Generates an url for the step.
-     */
     public function getUrlForStep(string $step): string
     {
         $uri = urldecode($this->requestStack->getCurrentRequest()->getUri());
@@ -157,12 +145,7 @@ class FormPageManager
         return $this->urlParser->addQueryString($stepParam . '=' . $step, $uri);
     }
 
-    /**
-     * Check if a given step is available.
-     *
-     * @param int $step
-     */
-    public function hasStep($step): bool
+    public function hasStep(int|string $step): bool
     {
         return isset($this->formPages[array_search($step, $this->formPageMapper, true)]);
     }
@@ -273,14 +256,21 @@ class FormPageManager
         return true;
     }
 
-    public function storeData(array $labels = []): void
+    public function storeData(array $data = [], array $labels = []): void
     {
-        $this->storage->saveStep($this->getCurrentStep(), $labels);
+        $this->storage->saveStep(
+            $this->getCurrentStep(),
+            $data,
+            $labels,
+            $this->files,
+        );
     }
 
-    /**
-     * Get data of given step.
-     */
+    public function setUploadedFiles(array $files): void
+    {
+        $this->files = $files;
+    }
+
     public function getDataOfStep(string $step): array
     {
         return $this->storage->getByStep($step);
@@ -321,11 +311,6 @@ class FormPageManager
     {
         $step ??= $this->getCurrentStep();
 
-        $test = isset($this->getDataOfStep($step)[$key])
-            && \array_key_exists($fieldName, $this->getDataOfStep($step)[$key]);
-
-        return $test;
-
         return isset($this->getDataOfStep($step)[$key])
             && \array_key_exists($fieldName, $this->getDataOfStep($step)[$key]);
     }
@@ -351,7 +336,7 @@ class FormPageManager
      *
      * @return true|string True if all steps valid, otherwise the step that failed validation
      */
-    public function validateSteps($stepFrom = 'start', $stepTo = null)
+    public function validateSteps($stepFrom = 'start', $stepTo = null): bool|string
     {
         if ($stepTo === null)
         {
@@ -379,9 +364,6 @@ class FormPageManager
         return true;
     }
 
-    /**
-     * Validates a step.
-     */
     public function validateStep($step): bool
     {
         $formFields = $this->getFieldsForStep($step);
@@ -397,12 +379,7 @@ class FormPageManager
         return true;
     }
 
-    /**
-     * Validates a field.
-     *
-     * @return bool
-     */
-    public function validateField(FormFieldModel $formField, int|string|null $step)
+    public function validateField(FormFieldModel $formField, int|string|null $step): bool
     {
         $class = $GLOBALS['TL_FFL'][$formField->type];
 
@@ -429,12 +406,6 @@ class FormPageManager
             }
         }
 
-        // Validation (needs to set POST values because the widget class searches
-        // only in POST values :-(
-        // This should only happen if value is not currently submitted and if
-        // the value is neither submitted in POST nor in the session, we have
-        // to default it to an empty string so the widget validates for mandatory
-        // fields
         $fakeValidation = false;
 
         if (!$this->checkWidgetSubmittedInCurrentStep($objWidget))
@@ -452,8 +423,10 @@ class FormPageManager
             // Handle files
             if ($this->isStoredInData($objWidget->name, $step, 'files'))
             {
-                // ToDo: Handle this in storage
-                $_FILES[$objWidget->name] = $this->fetchFromData($objWidget->name, $step, 'files');
+                // ToDo: Check files
+                // $files = $this->requestStack->getCurrentRequest()->files->all();
+
+                // $_FILES[$objWidget->name] = $this->fetchFromData($objWidget->name, $step, 'files');
             }
 
             $fakeValidation = true;
@@ -477,22 +450,16 @@ class FormPageManager
             Input::setPost($formField->name, null);
         }
 
-        // Special hack for upload fields because they delete $_FILES and thus
-        // multiple validation calls will fail - sigh
-        if ($objWidget instanceof \uploadable && isset($_SESSION['FILES'][$objWidget->name]))
+        // ToDo: Check files
+        /*if ($objWidget instanceof \uploadable && isset($_SESSION['FILES'][$objWidget->name]))
         {
             $_FILES[$objWidget->name] = $_SESSION['FILES'][$objWidget->name];
-        }
+        }*/
 
         return !$objWidget->hasErrors();
     }
 
-    /**
-     * Gets the step GET param.
-     *
-     * @return string
-     */
-    public function getStepParam()
+    public function getStepParam(): string
     {
         return $this->form->stepParam ?: 'step';
     }
@@ -502,9 +469,6 @@ class FormPageManager
         throw new RedirectResponseException($manager->getUrlForStep((string) $step));
     }
 
-    /**
-     * Loads the form field models (calling the compileFormFields hook).
-     */
     protected function loadFormFieldModels(): void
     {
         $objFormFields = FormFieldModel::findPublishedByPid($this->form->id);
@@ -536,35 +500,28 @@ class FormPageManager
         $this->formFields = $formFields;
     }
 
-    /**
-     * Get the form page for a given step.
-     *
-     * @param string $step
-     *
-     * @return FormPage
-     */
-    protected function getFormPageForStep($step)
+    protected function getFormPageForStep(int|string $step): FormPage
     {
         return $this->formPages[array_search($step, $this->formPageMapper, true)];
     }
 
-    /**
-     * Creates a dummy form instance that is needed for the hooks.
-     */
     protected function createDummyForm(): Form
     {
-        $form = new \stdClass();
-        $form->form = $this->form->id;
-        $form->headline = null;
-        $form->typePrefix = null;
-        $form->cssID = null;
+        $id = $this->form->id;
 
-        return new Form($form);
+        return new class($id) extends Form
+        {
+            public function __construct($id,)
+            {
+                $this->id = $id;
+                $this->headline = null;
+                $this->typePrefix = null;
+                $this->cssID = null;
+                $this->strColumn = 'main';
+            }
+        };
     }
 
-    /**
-     * Checks if a widget was submitted in current step handling some exceptions.
-     */
     private function checkWidgetSubmittedInCurrentStep(Widget $objWidget): bool
     {
         // Special handling for captcha field

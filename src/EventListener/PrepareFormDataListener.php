@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Oveleon\ContaoAdvancedForm\EventListener;
 
+use Codefog\HasteBundle\FileUploadNormalizer;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Form;
 use Oveleon\ContaoAdvancedForm\Service\FormPage\FormPageManagerFactory;
@@ -25,11 +26,11 @@ class PrepareFormDataListener
 {
     public function __construct(
         private readonly FormPageManagerFactory $formPageManager,
+        private readonly FileUploadNormalizer $fileUploadNormalizer,
         private readonly RequestStack $requestStack,
     ) {
     }
 
-    // ToDo: Use the storage
     public function __invoke(array &$submittedData, array &$labels, array $fields, Form $form, array &$files): void
     {
         $manager = $this->formPageManager->getForForm($form);
@@ -39,10 +40,15 @@ class PrepareFormDataListener
             return;
         }
 
-        $manager->storeData($submittedData);
+        if ($files !== [])
+        {
+            $manager->setUploadedFiles($this->fileUploadNormalizer->normalize($files));
+        }
+
+        $manager->storeData($submittedData, $labels);
 
         // Submit form
-        if ($manager->isLastStep() && 'continue' === $this->requestStack->getCurrentRequest()?->get('pageSwitch'))
+        if ($manager->isLastStep() && $this->requestStack->getCurrentRequest()?->get('pageSwitch') === 'continue')
         {
             $data = $manager->getDataOfAllSteps();
 

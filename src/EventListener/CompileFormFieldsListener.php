@@ -31,9 +31,6 @@ class CompileFormFieldsListener
     ) {
     }
 
-    /**
-     * @throws \JsonException
-     */
     public function __invoke(array $fields, string $formId, Form $form): array
     {
         if ($fields === [])
@@ -74,7 +71,7 @@ class CompileFormFieldsListener
         {
             $valid = $manager->validateSteps('start', $manager->getPreviousStep());
 
-            if (true !== $valid)
+            if ($valid !== true)
             {
                 $manager->setPreviousStepsWereInvalid();
                 $manager->redirectToStep($manager, $valid);

@@ -14,4 +14,5 @@ services:
     Oveleon\ContaoAdvancedForm\EventListener\PrepareFormDataListener:
         arguments:
             - '@contao_advanced_form.form_page_manager'
+            - '@Codefog\HasteBundle\FileUploadNormalizer'
             - '@request_stack'

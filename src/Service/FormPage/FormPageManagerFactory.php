@@ -26,6 +26,7 @@ class FormPageManagerFactory
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly UrlParser $urlParser,
+        private readonly string $projectDir,
     ) {
     }
 
@@ -35,6 +36,7 @@ class FormPageManagerFactory
             $form,
             $this->requestStack,
             $this->urlParser,
+            $this->projectDir,
         );
     }
 }
