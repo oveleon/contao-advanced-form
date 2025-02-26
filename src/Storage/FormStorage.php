@@ -50,7 +50,7 @@ class FormStorage
                 continue;
             }
 
-            $this->temporarySaveUploadedFiles($upload);
+            $this->handleTemporaryUploadedFiles($upload);
         }
 
         $storage = $this->session->get(self::FORM_STORAGE_IDENTIFIER, []);
@@ -141,7 +141,7 @@ class FormStorage
         return $storage[$this->identifier] ?? [];
     }
 
-    private function temporarySaveUploadedFiles(array &$upload): void
+    private function handleTemporaryUploadedFiles(array &$upload): void
     {
         $temp = [];
 
@@ -164,8 +164,11 @@ class FormStorage
                 move_uploaded_file($uploadedFile['tmp_name'], $target);
                 $upload[$key]['tmp_name'] = $target;
 
-                $temp = $upload[$key];
+                // If the file was uploaded through a PHP process, it should not be treated as an uploaded file
+                $upload[$key]['uploaded'] = false;
             }
+
+            $temp = $upload[$key];
         }
 
         $upload = $temp;
