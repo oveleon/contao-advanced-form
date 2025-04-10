@@ -36,7 +36,7 @@
   "require": {
     "php": "^8.1",
     "contao/core-bundle": "^5.3",
-    "codefog/contao-haste": "^5.0",
+    "codefog/contao-haste": "^5.2",
     "symfony/expression-language": "^6.4 || ^7.1",
     "symfony/config": "^6.4 || ^7.1",
     "symfony/dependency-injection": "^6.4 || ^7.1",
