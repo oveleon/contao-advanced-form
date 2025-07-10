@@ -4,8 +4,7 @@ The contao advanced form bundle adds a new form-field (Formpage) to forms that c
 
 ---
 
-> Working with **Contao 4.9** and up to **Contao 4.13** (PHP ^7.4 and PHP 8)
-> Cannot be installed together with [MP_Forms from Terminal24](https://github.com/terminal42/contao-mp_forms)
+> Working with **Contao 5.3**, install v.0.3 for legacy support (Contao 4.*)
 
 ---
 
@@ -17,7 +16,6 @@ The contao advanced form bundle adds a new form-field (Formpage) to forms that c
 + [Important Information](#important-information)
 + [Options](#options)
 + [Support](#support)
-+ [License](#license)
 + [Sponsoring](#sponsoring)
 
 ## Features
@@ -73,7 +71,7 @@ The 'formpage' form-field acts as a page-switch and you will be redirected to it
 
 
 3. Activate the "Add condition" checkbox and write your condition into it
-   
+
    ![Admin View: Advanced form overview](https://www.oveleon.de/share/github-assets/contao-advanced-form/advanced-form-page-switch.jpg)
 
 
@@ -88,10 +86,10 @@ The 'formpage' form-field acts as a page-switch and you will be redirected to it
 
 ### Conditions
 
-> Conditions within page-switches (Formpages) will always work for the 
+> Conditions within page-switches (Formpages) will always work for the
 >
-> **FOLLOWING** 
-> 
+> **FOLLOWING**
+>
 > form-fields up to the next page-switch (Formpage)
 
 ### Syntax
@@ -116,15 +114,15 @@ If more functionality is needed, feel free to create a feature issue.
 
 ### Buttons
 
-> The submit-button and back-button are set up for the 
-> 
-> **PREVIOUS** 
-> 
+> The submit-button and back-button are set up for the
+>
+> **PREVIOUS**
+>
 > form-page. They will work for the form-fields above the page-switch (Formpage).
 
 ### Classes
 
-> Classes will always be set for the 
+> Classes will always be set for the
 >
 > **PREVIOUS**
 >
@@ -132,7 +130,7 @@ If more functionality is needed, feel free to create a feature issue.
 
 ### Protecting and hiding form-pages
 
-> Using the option *'protect form page'* and *'show to guests only'*, will always work for the 
+> Using the option *'protect form page'* and *'show to guests only'*, will always work for the
 >
 > **PREVIOUS**
 >
@@ -158,11 +156,6 @@ If more functionality is needed, feel free to create a feature issue.
 > you will be able to find more help there.
 >
 > This will help us to keep the issues related to this plugin and solve them faster.
-
-
-## License
-
-This project is licensed under the AGPL-3.0 License — check  <a href="LICENSE">LICENSE</a> for more details.
 
 ## Sponsoring
 
