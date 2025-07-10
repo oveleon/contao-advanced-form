@@ -1,5 +1,6 @@
 {
   "name": "oveleon/contao-advanced-form",
+  "version": "1.0.0",
   "type": "contao-bundle",
   "description": "advanced-form extension for Contao Open Source CMS",
   "keywords": [
@@ -10,7 +11,7 @@
     "multipage"
   ],
   "homepage": "https://oveleon.de/",
-  "license": "AGPL-3.0",
+  "license": "proprietary",
   "authors": [
     {
       "name": "Oveleon",
