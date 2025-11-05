@@ -29,6 +29,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['formPageAlias'] = [
     'sql' => [
         'type' => 'string',
         'default' => '',
+        'length' => 255,
     ],
 ];
 
@@ -42,6 +43,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['blabel'] = [
     'sql' => [
         'type' => 'string',
         'default' => '',
+        'length' => 255,
     ],
 ];
 
@@ -72,6 +74,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['condition'] = [
     'sql' => [
         'type' => 'string',
         'default' => '',
+        'length' => 255,
     ],
 ];
 
@@ -115,5 +118,8 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['guests'] = [
     'eval' => [
         'tl_class' => 'w50',
     ],
-    'sql' => "char(1) NOT NULL default ''",
+    'sql' => [
+        'type' => 'boolean',
+        'default' => false
+    ]
 ];
