@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This file is part of Oveleon Contao Advanced Form.
  *
  * @package     contao-advanced-form
- * @license     proprietary
+ * @license     AGPL-3.0
  * @author      Fabian Ekert          <https://github.com/eki89>
  * @author      Daniele Sciannimanica <https://github.com/doishub>
  * @author      Sebastian Zoglowek    <https://github.com/zoglo>
@@ -37,8 +37,7 @@ class FormPage
 
     public function __get(string $strKey): mixed
     {
-        return match ($strKey)
-        {
+        return match ($strKey) {
             'accessible' => $this->accessible,
             'alias' => $this->pageSwitch->formPageAlias ?? 'start',
             default => null,
@@ -57,26 +56,22 @@ class FormPage
 
     public function isAccessible(FormPageManager $manager): bool
     {
-        if (!$this->pageSwitch instanceof FormFieldModel)
-        {
+        if (!$this->pageSwitch instanceof FormFieldModel) {
             return true;
         }
 
-        if ($this->pageSwitch->addCondition && !$this->evaluateExpression($manager))
-        {
+        if ($this->pageSwitch->addCondition && !$this->evaluateExpression($manager)) {
             return false;
         }
 
         $container = System::getContainer();
         $feUserLoggedIn = $container->get('contao.security.token_checker')->hasFrontendUser();
 
-        if ($this->pageSwitch->guests && $feUserLoggedIn)
-        {
+        if ($this->pageSwitch->guests && $feUserLoggedIn) {
             return false;
         }
 
-        if (!$this->pageSwitch->protected)
-        {
+        if (!$this->pageSwitch->protected) {
             return true;
         }
 

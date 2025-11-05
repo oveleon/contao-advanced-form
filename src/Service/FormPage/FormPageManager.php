@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This file is part of Oveleon Contao Advanced Form.
  *
  * @package     contao-advanced-form
- * @license     proprietary
+ * @license     AGPL-3.0
  * @author      Fabian Ekert          <https://github.com/eki89>
  * @author      Daniele Sciannimanica <https://github.com/doishub>
  * @author      Sebastian Zoglowek    <https://github.com/zoglo>
@@ -53,8 +53,7 @@ class FormPageManager
         private readonly UrlParser $urlParser,
         private readonly string $projectDir,
     ) {
-        if (null === ($this->form = $form->getModel()))
-        {
+        if (null === ($this->form = $form->getModel())) {
             $this->isValid = false;
 
             return;
@@ -65,8 +64,7 @@ class FormPageManager
 
         $this->loadFormFieldModels();
 
-        if ($this->formFields === [])
-        {
+        if ($this->formFields === []) {
             $this->isValid = false;
 
             return;
@@ -75,20 +73,17 @@ class FormPageManager
         $formPage = new FormPage();
         $this->formPageMapper = ['start'];
 
-        foreach ($this->formFields as $objFormField)
-        {
+        foreach ($this->formFields as $objFormField) {
             $formPage->addField($objFormField);
 
-            if ($this->isPageBreak($objFormField))
-            {
+            if ($this->isPageBreak($objFormField)) {
                 $this->formPages[] = $formPage;
 
                 $formPage = new FormPage($objFormField);
                 $this->formPageMapper[] = $objFormField->formPageAlias ?: (string) (\count($this->formPageMapper));
             }
 
-            if ($objFormField->type === 'submit')
-            {
+            if ($objFormField->type === 'submit') {
                 $this->isValid = false;
             }
         }
@@ -120,10 +115,8 @@ class FormPageManager
     {
         $formFields = $this->formFields;
 
-        foreach ($formFields as $k => $objFormField)
-        {
-            if ($objFormField->type === 'pageSwitch')
-            {
+        foreach ($formFields as $k => $objFormField) {
+            if ($objFormField->type === 'pageSwitch') {
                 unset($formFields[$k]);
             }
         }
@@ -137,8 +130,7 @@ class FormPageManager
 
         $stepParam = $this->getStepParam();
 
-        if ($step === '')
-        {
+        if ($step === '') {
             return $this->urlParser->removeQueryString([$stepParam], $uri);
         }
 
@@ -158,8 +150,7 @@ class FormPageManager
      */
     public function getFieldsForStep(string $step): array
     {
-        if (!$this->hasStep($step))
-        {
+        if (!$this->hasStep($step)) {
             throw new \InvalidArgumentException('Step "' . $step . '" is not available!');
         }
 
@@ -175,8 +166,7 @@ class FormPageManager
     {
         $alias = Input::get($this->getStepParam());
 
-        if (empty($alias))
-        {
+        if (empty($alias)) {
             return 'start';
         }
 
@@ -188,17 +178,14 @@ class FormPageManager
         $currentAlias = $this->getCurrentStep();
         $index = array_search($currentAlias, $this->formPageMapper, true);
 
-        if ($index === false)
-        {
+        if ($index === false) {
             return null;
         }
 
         $steps = \count($this->formPageMapper);
 
-        while (++$index < $steps)
-        {
-            if ($this->formPages[$index]->isAccessible($this))
-            {
+        while (++$index < $steps) {
+            if ($this->formPages[$index]->isAccessible($this)) {
                 return $this->formPageMapper[$index];
             }
         }
@@ -211,15 +198,12 @@ class FormPageManager
         $currentAlias = $this->getCurrentStep();
         $index = array_search($currentAlias, $this->formPageMapper, true);
 
-        if ($index === false)
-        {
+        if ($index === false) {
             return null;
         }
 
-        while (--$index >= 0)
-        {
-            if ($this->formPages[$index]->isAccessible($this))
-            {
+        while (--$index >= 0) {
+            if ($this->formPages[$index]->isAccessible($this)) {
                 return $this->formPages[$index]->alias;
             }
         }
@@ -240,15 +224,12 @@ class FormPageManager
         $currentIndex = array_search($this->getCurrentStep(), $this->formPageMapper, true);
         $targetIndex = \count($this->formPageMapper) - 2;
 
-        if ($currentIndex >= $targetIndex)
-        {
+        if ($currentIndex >= $targetIndex) {
             return true;
         }
 
-        for (++$currentIndex; $currentIndex <= $targetIndex; ++$currentIndex)
-        {
-            if ($this->formPages[$currentIndex]->isAccessible($this))
-            {
+        for (++$currentIndex; $currentIndex <= $targetIndex; ++$currentIndex) {
+            if ($this->formPages[$currentIndex]->isAccessible($this)) {
                 return false;
             }
         }
@@ -304,7 +285,7 @@ class FormPageManager
     /**
      * Check if there is data stored for a certain field name.
      *
-     * @param int|null $step Current step if null
+     * @param string|null $step Current step if null
      * @param string   $key
      */
     public function isStoredInData($fieldName, string|null $step = null, $key = 'submitted'): bool
@@ -318,10 +299,10 @@ class FormPageManager
     /**
      * Retrieve the value stored for a certain field name.
      *
-     * @param int|null $step Current step if null
+     * @param string|null $step Current step if null
      * @param string   $key
      */
-    public function fetchFromData($fieldName, string|null $step = null, $key = 'submitted')
+    public function fetchFromData(mixed $fieldName, string|null $step = null, string $key = 'submitted')
     {
         $step ??= $this->getCurrentStep();
 
@@ -336,27 +317,22 @@ class FormPageManager
      *
      * @return true|string True if all steps valid, otherwise the step that failed validation
      */
-    public function validateSteps($stepFrom = 'start', $stepTo = null): bool|string
+    public function validateSteps(string $stepFrom = 'start', $stepTo = null): bool|string
     {
-        if ($stepTo === null)
-        {
+        if ($stepTo === null) {
             $stepTo = $this->formPageMapper[\count($this->formPageMapper) - 1];
         }
 
-        foreach ($this->formPageMapper as $step)
-        {
-            if (!$this->getFormPageForStep($step)->isAccessible($this))
-            {
+        foreach ($this->formPageMapper as $step) {
+            if (!$this->getFormPageForStep($step)->isAccessible($this)) {
                 continue;
             }
 
-            if ($this->validateStep($step) === false)
-            {
+            if ($this->validateStep($step) === false) {
                 return $step;
             }
 
-            if ($step === $stepTo)
-            {
+            if ($step === $stepTo) {
                 break;
             }
         }
@@ -368,10 +344,8 @@ class FormPageManager
     {
         $formFields = $this->getFieldsForStep($step);
 
-        foreach ($formFields as $formField)
-        {
-            if ($this->validateField($formField, $step) === false)
-            {
+        foreach ($formFields as $formField) {
+            if ($this->validateField($formField, $step) === false) {
                 return false;
             }
         }
@@ -383,24 +357,21 @@ class FormPageManager
     {
         $class = $GLOBALS['TL_FFL'][$formField->type];
 
-        if (!class_exists($class))
-        {
+        if (!class_exists($class)) {
             return true;
         }
 
         /** @var Widget $objWidget */
         $objWidget = new $class($formField->row());
-        $objWidget->required = (bool) $formField->mandatory;
+        $objWidget->required = $formField->mandatory;
         $objWidget->decodeEntities = true;
 
         // Needed for the hook
         $form = $this->createDummyForm();
 
         // HOOK: load form field callback
-        if (isset($GLOBALS['TL_HOOKS']['loadFormField']) && \is_array($GLOBALS['TL_HOOKS']['loadFormField']))
-        {
-            foreach ($GLOBALS['TL_HOOKS']['loadFormField'] as $callback)
-            {
+        if (isset($GLOBALS['TL_HOOKS']['loadFormField']) && \is_array($GLOBALS['TL_HOOKS']['loadFormField'])) {
+            foreach ($GLOBALS['TL_HOOKS']['loadFormField'] as $callback) {
                 $objCallback = System::importStatic($callback[0]);
                 $objWidget = $objCallback->{$callback[1]}($objWidget, $this->getFormId(), $this->form->row(), $form);
             }
@@ -408,26 +379,22 @@ class FormPageManager
 
         $fakeValidation = false;
 
-        if (!$this->checkWidgetSubmittedInCurrentStep($objWidget))
-        {
+        if (!$this->checkWidgetSubmittedInCurrentStep($objWidget)) {
             // Handle regular fields
-            if ($this->isStoredInData($objWidget->name, $step))
-            {
+            if ($this->isStoredInData($objWidget->name, $step)) {
                 Input::setPost($formField->name, $this->fetchFromData($objWidget->name, $step));
             }
-            else
-            {
+            else {
                 Input::setPost($formField->name, '');
             }
 
             // Handle files
-            if ($this->isStoredInData($objWidget->name, $step, 'files'))
-            {
-                // ToDo: Check files
+            // ToDo: Check files (Most likely BC related and not needed anymore?)
+            /*if ($this->isStoredInData($objWidget->name, $step, 'files')) {
                 // $files = $this->requestStack->getCurrentRequest()->files->all();
 
                 // $_FILES[$objWidget->name] = $this->fetchFromData($objWidget->name, $step, 'files');
-            }
+            }*/
 
             $fakeValidation = true;
         }
@@ -435,22 +402,19 @@ class FormPageManager
         $objWidget->validate();
 
         // HOOK: validate form field callback
-        if (isset($GLOBALS['TL_HOOKS']['validateFormField']) && \is_array($GLOBALS['TL_HOOKS']['validateFormField']))
-        {
-            foreach ($GLOBALS['TL_HOOKS']['validateFormField'] as $callback)
-            {
+        if (isset($GLOBALS['TL_HOOKS']['validateFormField']) && \is_array($GLOBALS['TL_HOOKS']['validateFormField'])) {
+            foreach ($GLOBALS['TL_HOOKS']['validateFormField'] as $callback) {
                 $objCallback = System::importStatic($callback[0]);
                 $objWidget = $objCallback->{$callback[1]}($objWidget, $this->getFormId(), $this->form->row(), $form);
             }
         }
 
         // Reset fake validation
-        if ($fakeValidation)
-        {
+        if ($fakeValidation) {
             Input::setPost($formField->name, null);
         }
 
-        // ToDo: Check files
+        // ToDo: Check files (Most likely BC related and not needed anymore?)
         /*if ($objWidget instanceof \uploadable && isset($_SESSION['FILES'][$objWidget->name]))
         {
             $_FILES[$objWidget->name] = $_SESSION['FILES'][$objWidget->name];
@@ -474,21 +438,17 @@ class FormPageManager
         $objFormFields = FormFieldModel::findPublishedByPid($this->form->id);
         $formFields = [];
 
-        if ($objFormFields !== null)
-        {
+        if ($objFormFields !== null) {
             $formFields = $objFormFields->getModels();
         }
 
         $form = $this->createDummyForm();
 
         // HOOK: compile form fields
-        if (isset($GLOBALS['TL_HOOKS']['compileFormFields']) && \is_array($GLOBALS['TL_HOOKS']['compileFormFields']))
-        {
-            foreach ($GLOBALS['TL_HOOKS']['compileFormFields'] as $callback)
-            {
+        if (isset($GLOBALS['TL_HOOKS']['compileFormFields']) && \is_array($GLOBALS['TL_HOOKS']['compileFormFields'])) {
+            foreach ($GLOBALS['TL_HOOKS']['compileFormFields'] as $callback) {
                 // Do not call ourselves recursively
-                if ($callback[0] === CompileFormFieldsListener::class)
-                {
+                if ($callback[0] === CompileFormFieldsListener::class) {
                     continue;
                 }
 
@@ -509,9 +469,8 @@ class FormPageManager
     {
         $id = $this->form->id;
 
-        return new class($id) extends Form
-        {
-            public function __construct($id,)
+        return new class($id) extends Form {
+            public function __construct($id)
             {
                 $this->id = $id;
                 $this->headline = null;
@@ -525,8 +484,7 @@ class FormPageManager
     private function checkWidgetSubmittedInCurrentStep(Widget $objWidget): bool
     {
         // Special handling for captcha field
-        if ($objWidget instanceof FormCaptcha)
-        {
+        if ($objWidget instanceof FormCaptcha) {
             // ToDo Test
             $captcha = $this->session->get('captcha_' . $objWidget->id);
 

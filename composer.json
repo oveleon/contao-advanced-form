@@ -1,6 +1,5 @@
 {
     "name": "oveleon/contao-advanced-form",
-    "version": "1.0.0",
     "type": "contao-bundle",
     "description": "advanced-form extension for Contao Open Source CMS",
     "keywords": [
@@ -44,7 +43,7 @@
         "symfony/http-kernel": "^6.4 || ^7.3"
     },
     "require-dev": {
-        "contao/manager-plugin": "^2.3.1"
+        "contao/manager-plugin": "^2.0"
     },
     "conflict": {
         "contao/core": "*",

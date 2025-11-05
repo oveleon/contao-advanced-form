@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This file is part of Oveleon Contao Advanced Form.
  *
  * @package     contao-advanced-form
- * @license     proprietary
+ * @license     AGPL-3.0
  * @author      Fabian Ekert          <https://github.com/eki89>
  * @author      Daniele Sciannimanica <https://github.com/doishub>
  * @author      Sebastian Zoglowek    <https://github.com/zoglo>
@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'addCondition';
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'protected';
-$GLOBALS['TL_DCA']['tl_form_field']['palettes']['pageSwitch'] = '{type_legend},type,formPageAlias,label,slabel,blabel;{image_legend:hide},imageSubmit;{condition_legend},addCondition,protected,guests;{expert_legend:hide},class,accesskey,tabindex;{template_legend:hide},customTpl;{invisible_legend:hide},invisible';
+$GLOBALS['TL_DCA']['tl_form_field']['palettes']['pageSwitch'] = '{type_legend},type,formPageAlias,label,slabel,blabel;{image_legend:collapsed},imageSubmit;{condition_legend},addCondition,protected,guests;{expert_legend:collapsed},class,accesskey,tabindex;{template_legend:collapsed},customTpl;{invisible_legend:collapsed},invisible';
 $GLOBALS['TL_DCA']['tl_form_field']['subpalettes']['addCondition'] = 'condition';
 $GLOBALS['TL_DCA']['tl_form_field']['subpalettes']['protected'] = 'groups';
 

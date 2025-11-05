@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This file is part of Oveleon Contao Advanced Form.
  *
  * @package     contao-advanced-form
- * @license     proprietary
+ * @license     AGPL-3.0
  * @author      Fabian Ekert          <https://github.com/eki89>
  * @author      Daniele Sciannimanica <https://github.com/doishub>
  * @author      Sebastian Zoglowek    <https://github.com/zoglo>
@@ -36,6 +36,7 @@ class PageSwitch extends Widget
     /**
      * Skip form field validation.
      */
+    #[\Override]
     public function validator(mixed $varInput): mixed
     {
         return $varInput;
@@ -48,29 +49,26 @@ class PageSwitch extends Widget
      *
      * @return string The template markup
      */
+    #[\Override]
     public function parse($arrAttributes = null): string
     {
         $request = System::getContainer()->get('request_stack')->getCurrentRequest();
 
-        if ($request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request))
-        {
+        if ($request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)) {
             $objTemplate = new BackendTemplate('be_wildcard');
             $objTemplate->title = $this->label;
 
-            if ($this->addCondition)
-            {
+            if ($this->addCondition) {
                 $objTemplate->wildcard = $this->condition;
             }
 
             return $objTemplate->parse();
         }
 
-        if ($this->imageSubmit && $this->singleSRC)
-        {
+        if ($this->imageSubmit && $this->singleSRC) {
             $objModel = FilesModel::findByUuid($this->singleSRC);
 
-            if ($objModel !== null && is_file(System::getContainer()->getParameter('kernel.project_dir') . '/' . $objModel->path))
-            {
+            if ($objModel !== null && is_file(System::getContainer()->getParameter('kernel.project_dir') . '/' . $objModel->path)) {
                 $this->src = $objModel->path;
             }
         }

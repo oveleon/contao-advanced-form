@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This file is part of Oveleon Contao Advanced Form.
  *
  * @package     contao-advanced-form
- * @license     proprietary
+ * @license     AGPL-3.0
  * @author      Fabian Ekert          <https://github.com/eki89>
  * @author      Daniele Sciannimanica <https://github.com/doishub>
  * @author      Sebastian Zoglowek    <https://github.com/zoglo>
@@ -22,12 +22,12 @@ use Oveleon\ContaoAdvancedForm\Service\FormPage\FormPageManagerFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 #[AsHook('prepareFormData')]
-class PrepareFormDataListener
+readonly class PrepareFormDataListener
 {
     public function __construct(
-        private readonly FormPageManagerFactory $formPageManager,
-        private readonly FileUploadNormalizer $fileUploadNormalizer,
-        private readonly RequestStack $requestStack,
+        private FormPageManagerFactory $formPageManager,
+        private FileUploadNormalizer $fileUploadNormalizer,
+        private RequestStack $requestStack,
     ) {
     }
 
@@ -35,21 +35,18 @@ class PrepareFormDataListener
     {
         $manager = $this->formPageManager->getForForm($form);
 
-        if (!$manager->isValidFormFieldCombination())
-        {
+        if (!$manager->isValidFormFieldCombination()) {
             return;
         }
 
-        if ($files !== [])
-        {
+        if ($files !== []) {
             $manager->setUploadedFiles($this->fileUploadNormalizer->normalize($files));
         }
 
         $manager->storeData($submittedData, $labels);
 
         // Submit form
-        if ($manager->isLastStep() && $this->requestStack->getCurrentRequest()?->get('pageSwitch') === 'continue')
-        {
+        if ($manager->isLastStep() && $this->requestStack->getCurrentRequest()?->get('pageSwitch') === 'continue') {
             $data = $manager->getDataOfAllSteps();
 
             $submittedData = $data['submitted'];

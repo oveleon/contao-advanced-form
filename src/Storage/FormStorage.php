@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This file is part of Oveleon Contao Advanced Form.
  *
  * @package     contao-advanced-form
- * @license     proprietary
+ * @license     AGPL-3.0
  * @author      Fabian Ekert          <https://github.com/eki89>
  * @author      Daniele Sciannimanica <https://github.com/doishub>
  * @author      Sebastian Zoglowek    <https://github.com/zoglo>
@@ -21,11 +21,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FormStorage
 {
-    const FORM_STORAGE_IDENTIFIER = 'ADV_FORM_STORAGE';
+    const string FORM_STORAGE_IDENTIFIER = 'ADV_FORM_STORAGE';
 
-    const FORM_INVALID_IDENTIFIER = 'ADV_FORM_INVALID';
+    const string FORM_INVALID_IDENTIFIER = 'ADV_FORM_INVALID';
 
-    const FILE_STORAGE_IDENTIFIER = 'advf';
+    const string FILE_STORAGE_IDENTIFIER = 'advf';
 
     private readonly SessionInterface $session;
 
@@ -39,14 +39,9 @@ class FormStorage
 
     public function saveStep(string $step, array $submitted, array $labels = [], array $files = []): void
     {
-        // $submitted = $this->requestStack->getCurrentRequest()->request->all();
-        // $files = $this->requestStack->getCurrentRequest()->files->all();
-
         // Make sure files are moved to our own tmp directory so they are kept across php processes
-        foreach ($files as &$upload)
-        {
-            if (!\is_array($upload))
-            {
+        foreach ($files as &$upload) {
+            if (!\is_array($upload)) {
                 continue;
             }
 
@@ -66,19 +61,6 @@ class FormStorage
         ]));
     }
 
-    /*private function normalizeSymfonyFileUpload(UploadedFile $file): array
-    {
-        return [
-            'name' => pathinfo($file->getClientOriginalName(), \PATHINFO_FILENAME),
-            'type' => $file->guessExtension(),
-            'tmp_name' => $file->getPathname(),
-            'error' => $file->getError(),
-            'size' => $file->getSize(),
-            'uploaded' => true,
-            'uuid' => null,
-        ];
-    }*/
-
     public function getByStep(string $step): array
     {
         return $this->getStorage()[$step] ?? [];
@@ -88,14 +70,12 @@ class FormStorage
     {
         $arrSubmitted = $arrLabels = $arrFiles = $formFields = [];
 
-        if ($fields !== [])
-        {
+        if ($fields !== []) {
             $formFields = array_fill_keys(array_column($fields, 'name'), '');
             unset($formFields['']); // Unset the empty key
         }
 
-        foreach ($this->getStorage() as $stepData)
-        {
+        foreach ($this->getStorage() as $stepData) {
             $arrSubmitted = array_merge($arrSubmitted, (array) $stepData['submitted']);
             $arrLabels = array_merge($arrLabels, (array) $stepData['labels']);
             $arrFiles = array_merge($arrFiles, (array) $stepData['files']);
@@ -145,21 +125,17 @@ class FormStorage
     {
         $temp = [];
 
-        foreach ($upload as $key => &$uploadedFile)
-        {
-            if (!\is_array($uploadedFile))
-            {
+        foreach ($upload as $key => &$uploadedFile) {
+            if (!\is_array($uploadedFile)) {
                 continue;
             }
 
-            if (!\array_key_exists('tmp_name', $uploadedFile))
-            {
+            if (!\array_key_exists('tmp_name', $uploadedFile)) {
                 continue;
             }
 
-            if (is_uploaded_file($uploadedFile['tmp_name']))
-            {
-                $tempDir = $this->projectDir . DIRECTORY_SEPARATOR . 'system'. DIRECTORY_SEPARATOR . 'tmp';
+            if (is_uploaded_file($uploadedFile['tmp_name'])) {
+                $tempDir = $this->projectDir . \DIRECTORY_SEPARATOR . 'system' . \DIRECTORY_SEPARATOR . 'tmp';
                 $target = (new Filesystem())->tempnam($tempDir, self::FILE_STORAGE_IDENTIFIER);
                 move_uploaded_file($uploadedFile['tmp_name'], $target);
                 $upload[$key]['tmp_name'] = $target;

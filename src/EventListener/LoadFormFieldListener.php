@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This file is part of Oveleon Contao Advanced Form.
  *
  * @package     contao-advanced-form
- * @license     proprietary
+ * @license     AGPL-3.0
  * @author      Fabian Ekert          <https://github.com/eki89>
  * @author      Daniele Sciannimanica <https://github.com/doishub>
  * @author      Sebastian Zoglowek    <https://github.com/zoglo>
@@ -21,10 +21,10 @@ use Contao\Widget;
 use Oveleon\ContaoAdvancedForm\Service\FormPage\FormPageManagerFactory;
 
 #[AsHook('loadFormField')]
-class LoadFormFieldListener
+readonly class LoadFormFieldListener
 {
     public function __construct(
-        private readonly FormPageManagerFactory $formPageManagerFactory,
+        private FormPageManagerFactory $formPageManagerFactory,
     ) {
     }
 
@@ -32,8 +32,7 @@ class LoadFormFieldListener
     {
         $manager = $this->formPageManagerFactory->getForForm($form);
 
-        if ($manager->isStoredInData($widget->name))
-        {
+        if ($manager->isStoredInData($widget->name)) {
             $widget->value = $manager->fetchFromData($widget->name);
         }
 
