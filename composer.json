@@ -1,74 +1,65 @@
 {
-  "name": "oveleon/contao-advanced-form",
-  "version": "1.0.0",
-  "type": "contao-bundle",
-  "description": "advanced-form extension for Contao Open Source CMS",
-  "keywords": [
-    "contao",
-    "forms",
-    "condition",
-    "multi",
-    "multipage"
-  ],
-  "homepage": "https://oveleon.de/",
-  "license": "proprietary",
-  "authors": [
-    {
-      "name": "Oveleon",
-      "homepage": "https://oveleon.de/",
-      "role": "Developer"
-    },
-    {
-      "name": "Daniele Sciannimanica",
-      "homepage": "https://github.com/doishub",
-      "role": "Developer"
-    },
-    {
-      "name": "Fabian Ekert",
-      "homepage": "https://github.com/eki89",
-      "role": "Developer"
-    },
-    {
-      "name": "Sebastian Zoglowek",
-      "homepage": "https://github.com/zoglo",
-      "role": "Developer"
-    }
-  ],
-  "require": {
-    "php": "^8.1",
-    "contao/core-bundle": "^5.3",
-    "codefog/contao-haste": "^5.2",
-    "symfony/expression-language": "^6.4 || ^7.1",
-    "symfony/config": "^6.4 || ^7.1",
-    "symfony/dependency-injection": "^6.4 || ^7.1",
-    "symfony/http-kernel": "^6.4 || ^7.1"
-  },
-  "require-dev": {
-    "contao/manager-plugin": "^2.3.1"
-  },
-  "conflict": {
-    "contao/core": "*",
-    "contao/manager-plugin": "<2.0 || >=3.0",
-    "terminal42/contao-mp_forms": "*"
-  },
-  "autoload": {
-    "psr-4": {
-      "Oveleon\\ContaoAdvancedForm\\": "src/"
-    },
-    "classmap": [
-      "contao/"
+    "name": "oveleon/contao-advanced-form",
+    "version": "1.0.0",
+    "type": "contao-bundle",
+    "description": "advanced-form extension for Contao Open Source CMS",
+    "keywords": [
+        "contao",
+        "forms",
+        "condition",
+        "multi",
+        "multipage"
     ],
-    "exclude-from-classmap": [
-      "contao/config/",
-      "contao/dca/",
-      "contao/languages/",
-      "contao/templates/"
-    ]
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-main": "1.0.x-dev"
+    "homepage": "https://oveleon.de/",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Oveleon",
+            "homepage": "https://oveleon.de/",
+            "role": "Developer"
+        },
+        {
+            "name": "Daniele Sciannimanica",
+            "homepage": "https://github.com/doishub",
+            "role": "Developer"
+        },
+        {
+            "name": "Fabian Ekert",
+            "homepage": "https://github.com/eki89",
+            "role": "Developer"
+        },
+        {
+            "name": "Sebastian Zoglowek",
+            "homepage": "https://github.com/zoglo",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "contao/core-bundle": "^5.3",
+        "codefog/contao-haste": "^5.2",
+        "symfony/expression-language": "^6.4 || ^7.3",
+        "symfony/config": "^6.4 || ^7.3",
+        "symfony/dependency-injection": "^6.4 || ^7.3",
+        "symfony/http-kernel": "^6.4 || ^7.3"
     },
-    "contao-manager-plugin": "Oveleon\\ContaoAdvancedForm\\ContaoManager\\Plugin"
-  }
+    "require-dev": {
+        "contao/manager-plugin": "^2.3.1"
+    },
+    "conflict": {
+        "contao/core": "*",
+        "contao/manager-plugin": "<2.0 || >=3.0",
+        "terminal42/contao-mp_forms": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Oveleon\\ContaoAdvancedForm\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        },
+        "contao-manager-plugin": "Oveleon\\ContaoAdvancedForm\\ContaoManager\\Plugin"
+    }
 }

@@ -16,6 +16,7 @@ The contao advanced form bundle adds a new form-field (Formpage) to forms that c
 + [Important Information](#important-information)
 + [Options](#options)
 + [Support](#support)
++ [License](#license)
 + [Sponsoring](#sponsoring)
 
 ## Features
@@ -156,6 +157,10 @@ If more functionality is needed, feel free to create a feature issue.
 > you will be able to find more help there.
 >
 > This will help us to keep the issues related to this plugin and solve them faster.
+
+## License
+
+This project is licensed under the AGPL-3.0 License — check  <a href="LICENSE">LICENSE</a> for more details.
 
 ## Sponsoring
 
