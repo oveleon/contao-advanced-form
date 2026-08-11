@@ -18,6 +18,7 @@ namespace Oveleon\ContaoAdvancedForm\EventListener;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Form;
 use Contao\Input;
+use Oveleon\ContaoAdvancedForm\Service\FormPage\FormPageManager;
 use Oveleon\ContaoAdvancedForm\Service\FormPage\FormPageManagerFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -51,7 +52,9 @@ readonly class CompileFormFieldsListener
         }
 
         if ($request->get('pageSwitch') === 'back') {
-            $manager->storeData();
+            // Contao must not validate anything when the visitor wants to go back, but what has already been
+            // entered on the current step is stored anyway, so it is still there when they return to it.
+            $manager->storeData($this->getSubmittedData($manager, $request));
             $manager->redirectToStep($manager, $manager->getPreviousStep());
         }
 
@@ -70,5 +73,36 @@ readonly class CompileFormFieldsListener
         }
 
         return $manager->getFieldsForStep($manager->getCurrentStep());
+    }
+
+    /**
+     * Returns the values of the current step from the request, limited to the fields of that step.
+     *
+     * The request is not stored as it is: it also carries FORM_SUBMIT, REQUEST_TOKEN and the page switch itself,
+     * which would end up in the submitted data of the form.
+     */
+    private function getSubmittedData(FormPageManager $manager, Request $request): array
+    {
+        $step = $manager->getCurrentStep();
+
+        if (!$manager->hasStep($step)) {
+            return [];
+        }
+
+        $submitted = $request->request->all();
+        $data = [];
+
+        foreach ($manager->getFieldsForStep($step) as $formField) {
+            $name = (string) $formField->name;
+
+            // Fieldsets, explanations and the page switch itself have no name of their own
+            if ($name === '' || !\array_key_exists($name, $submitted)) {
+                continue;
+            }
+
+            $data[$name] = $submitted[$name];
+        }
+
+        return $data;
     }
 }
